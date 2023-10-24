@@ -1,16 +1,18 @@
-function loadFooter() {
-    const footerPlaceholder = document.getElementById("footer-placeholder");
-    if (footerPlaceholder) {
-        fetch("footer.html") // Load the external footer.html file
+function loadSection(sectionId, sectionPath) {
+    const sectionPlaceholder = document.getElementById(sectionId);
+    if (sectionPlaceholder) {
+        fetch(sectionPath) // Load the external section content
             .then((response) => response.text())
             .then((data) => {
-                footerPlaceholder.innerHTML = data;
+                sectionPlaceholder.innerHTML = data;
             })
             .catch((error) => {
-                console.error("Failed to load footer:", error);
+                console.error("Failed to load section:", error);
             });
     }
 }
 
-// Call the function to load the footer when the page loads
-window.addEventListener("load", loadFooter);
+window.addEventListener("load", function() {
+    loadSection("header-placeholder", "header.html"); // Load the header
+    loadSection("footer-placeholder", "footer.html"); // Load the footer
+});

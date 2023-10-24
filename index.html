@@ -267,60 +267,7 @@
     </div>
     </div>
     <!-- footer -->
-    <div class="footer-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box about-widget">
-                        <h2 class="widget-title">About us</h2>
-                        <p>We are two physics students at the National University of Colombia. FINISH DESCRIPTIO!!</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box get-in-touch">
-                        <h2 class="widget-title">Get in Touch</h2>
-                        <ul>
-                            <li>cdelv@unal.edu.co</li>
-                            <li>dangarciahe@unal.edu.co</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box pages">
-                        <h2 class="widget-title">Pages</h2>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="news.html">Posts</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="footer-box subscribe">
-                        <h2 class="widget-title">Subscribe</h2>
-                        <p>Subscribe to our mailing list to get the latest updates.</p>
-                        <form action="index.html">
-                            <input type="email" placeholder="Email">
-                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end footer -->
-    <!-- copyright -->
-    <div class="copyright">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-12">
-                    <p>Copyrights &copy; 2023 - <a>Carlos Andrés del Valle and Daniel Alejandro Garcia</a>, All Rights Reserved.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end copyright -->
+    <div id="footer-placeholder"></div>
     <!-- jquery -->
     <script src="assets/js/jquery-1.11.3.min.js"></script>
     <!-- bootstrap -->
@@ -341,6 +288,25 @@
     <script src="assets/js/sticker.js"></script>
     <!-- main js -->
     <script src="assets/js/main.js"></script>
+    <script>
+    // Function to load the footer content into the placeholder
+    function loadFooter() {
+        const footerPlaceholder = document.getElementById("footer-placeholder");
+        if (footerPlaceholder) {
+            fetch("footer.html") // Load the external footer.html file
+                .then((response) => response.text())
+                .then((data) => {
+                    footerPlaceholder.innerHTML = data;
+                })
+                .catch((error) => {
+                    console.error("Failed to load footer:", error);
+                });
+        }
+    }
+
+    // Call the function to load the footer when the page loads
+    window.addEventListener("load", loadFooter);
+    </script>
 </body>
 
 </html>

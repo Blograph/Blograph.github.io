@@ -460,9 +460,9 @@ a.read-more-btn {
   display: inline-block;
   margin-top: 15px;
   color: var(--secondary_color);
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
   font-weight: 700;
 }
 
@@ -608,9 +608,9 @@ nav.main-menu ul ul.sub-menu {
   left: 0;
   top: 50px;
   border-radius: 3px;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
   opacity: 0;
   visibility: hidden;
   -webkit-box-shadow: 0 0 20px #555555;
@@ -693,6 +693,17 @@ ul.sub-menu li:last-child {
   padding: 8px 8px 6px;
 }
 
+
+.container-carousel {
+  margin-top: 10px;
+  margin-right: -10px;
+  margin-bottom: 10px;
+  margin-left: -10px;
+}
+
+
+
+
 nav.mean-nav > ul > li:first-child > a {
   border-top: none;
 }
@@ -731,15 +742,15 @@ nav.main-menu li:hover > a {
 }
 
 nav.main-menu li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .top-header-area .header-icons a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .top-header-area .header-icons a:hover {
@@ -760,9 +771,9 @@ nav.main-menu li a {
 }
 
 .top-header-area {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.navbar-nav {
@@ -861,9 +872,9 @@ a.mobile-show {
 .search-area {
   visibility: hidden;
   opacity: 0;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .search-area.search-active {
@@ -891,8 +902,8 @@ a.mobile-show {
 }
 
 .logo-carousel-section {
-  background-color: #f5f5f5;
-  padding: 50px 0;
+  background-color: var(--background_color);
+  padding: 50px;
 }
 
 .footer-area {
@@ -1032,9 +1043,9 @@ h2.widget-title:after {
 
 ----------------------------------------------------------------------------- */
 a.navbar-brand {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.navbar-brand:hover {
@@ -1053,9 +1064,9 @@ a.boxed-btn:hover {
 }
 
 a.bordered-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.bordered-btn:hover {
@@ -1064,9 +1075,9 @@ a.bordered-btn:hover {
 }
 
 ul.sub-menu a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.sub-menu li:hover a {
@@ -1074,9 +1085,9 @@ ul.sub-menu li:hover a {
 }
 
 .single-tof-box {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-tof-box:hover {
@@ -1085,9 +1096,9 @@ ul.sub-menu li:hover a {
 }
 
 a.video-play-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.video-play-btn:hover {
@@ -1096,9 +1107,9 @@ a.video-play-btn:hover {
 }
 
 .latest-news-bg {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-latest-news:hover .latest-news-bg {
@@ -1106,15 +1117,15 @@ a.video-play-btn:hover {
 }
 
 a.tof-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.tof-btn i {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.tof-btn:hover {
@@ -1126,11 +1137,11 @@ a.tof-btn:hover i {
 }
 
 .single-latest-news {
-  -webkit-box-shadow: 0 0 20px #dddddd;
-  box-shadow: 0 0 20px #dddddd;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-box-shadow: 0 0 10px var(--secondary_color);
+  box-shadow: 0 0 10px var(--secondary_color);
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-latest-news:hover {
@@ -1141,9 +1152,9 @@ a.tof-btn:hover i {
 }
 
 .single-logo-item {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-logo-item:hover {
@@ -1151,9 +1162,9 @@ a.tof-btn:hover i {
 }
 
 .footer-box.pages ul li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .footer-box.pages ul li:hover a {
@@ -1161,9 +1172,9 @@ a.tof-btn:hover i {
 }
 
 .footer-box.subscribe form button {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .footer-box.subscribe form button:hover {
@@ -1177,15 +1188,15 @@ a.tof-btn:hover i {
 }
 
 .social-icons ul li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.social-link-team li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.social-link-team li a:hover {
@@ -1194,9 +1205,9 @@ ul.social-link-team li a:hover {
 }
 
 .counter-box {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .counter-box:hover {
@@ -1205,9 +1216,9 @@ ul.social-link-team li a:hover {
 }
 
 input[type="submit"] {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
   border-radius: 50px !important;
 }
 
@@ -1217,9 +1228,9 @@ input[type="submit"]:hover {
 }
 
 div.owl-controls, .owl-controls div {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 div.owl-controls div.owl-nav div:hover {
@@ -1227,9 +1238,9 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 .pagination-wrap ul li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .pagination-wrap ul li:hover a {
@@ -1237,9 +1248,9 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 .icons a i {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .icons a:hover i {
@@ -1252,9 +1263,9 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 .single-pricing-table {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-pricing-table:hover {
@@ -1263,9 +1274,9 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 .product-image img {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .product-image img:hover {
@@ -1274,9 +1285,9 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 a.cart-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.cart-btn:hover {
@@ -1285,9 +1296,9 @@ a.cart-btn:hover {
 }
 
 .recent-posts ul li {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .recent-posts ul li:hover {
@@ -1295,9 +1306,9 @@ a.cart-btn:hover {
 }
 
 ul.sub-menu li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.sub-menu li:hover a {
@@ -1305,9 +1316,9 @@ ul.sub-menu li:hover a {
 }
 
 .sidebar-section ul li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .sidebar-section ul li a:hover {
@@ -1315,9 +1326,9 @@ ul.sub-menu li:hover a {
 }
 
 .comment-text-body h4 a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .comment-text-body h4 a:hover {
@@ -1325,9 +1336,9 @@ ul.sub-menu li:hover a {
 }
 
 ul.product-share li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 ul.product-share li:hover a {
@@ -1335,9 +1346,9 @@ ul.product-share li:hover a {
 }
 
 .service-menu ul li a {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .service-menu ul li a.active {
@@ -1350,9 +1361,9 @@ ul.product-share li:hover a {
 }
 
 .single-product-item {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .single-product-item:hover {
@@ -1361,9 +1372,9 @@ ul.product-share li:hover a {
 }
 
 .search-bar-tablecell button[type=submit] {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 .search-bar-tablecell button[type=submit]:hover {
@@ -1372,9 +1383,9 @@ ul.product-share li:hover a {
 }
 
 span.close-btn {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 span.close-btn:hover {
@@ -1382,9 +1393,9 @@ span.close-btn:hover {
 }
 
 a.mobile-show.search-bar-icon {
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
 }
 
 a.mobile-show.search-bar-icon:hover {

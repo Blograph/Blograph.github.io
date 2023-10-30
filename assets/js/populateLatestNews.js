@@ -36,7 +36,7 @@ function populateLatestNews() {
             console.error("Failed to fetch latest posts:", error);
         });
 }
-window.addEventListener("load", populateLatestNews);
+document.addEventListener("DOMContentLoaded", populateLatestNews);
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -82,4 +82,4 @@ function populateCarousel() {
             console.error("Failed to fetch random posts:", error);
         });
 }
-window.addEventListener("load", populateCarousel);
+document.addEventListener("DOMContentLoaded", populateCarousel);

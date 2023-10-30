@@ -12,7 +12,7 @@ function loadSection(sectionId, sectionPath) {
     }
 }
 
-window.addEventListener("load", function() {
+document.addEventListener("DOMContentLoaded", function() {
     loadSection("header-placeholder", "header.html"); // Load the header
     loadSection("footer-placeholder", "footer.html"); // Load the footer
 });

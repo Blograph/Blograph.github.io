@@ -75,7 +75,7 @@ body img {
 
 
 .my-anchor:link {
-   color: blue;
+   colo: blue;
 }
 
 .my-anchor:hover {
@@ -2464,6 +2464,22 @@ ul.social-link-team li a {
   color: var(--text_color);
   margin-bottom: 10px;
 }
+
+
+.d-flex.justify-content-center {
+  align-items: center;
+}
+
+
+.custom-embed-size {
+  max-width: 2100px; /* Set the maximum width of the container */
+  max-height: 900px; /* Set the maximum height of the container */
+}
+
+
+
+
+
 
 /* -----------------------------------------------------------------------------
 

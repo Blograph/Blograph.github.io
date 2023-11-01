@@ -44,7 +44,6 @@ function createNewElement(index) {
                     <span class="author"><i class="fas fa-user"></i> ${posts_info[index].author}</span>
                     <span class="date"><i class="fas fa-calendar"></i> ${posts_info[index].date}</span>
                 </p>
-                <p class="excerpt">${posts_info[index].excerpt}</p>
                 <a href="${posts_info[index].link}" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
             </div>
         </div>

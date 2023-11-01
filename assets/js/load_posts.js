@@ -22,7 +22,7 @@ $(document).ready(function() {
           <div class="col-lg-4 col-md-6">
             <div class="single-latest-news">
               <a href="${post.link}">
-                <div class="latest-news-bg news-bg-1"></div>
+                <div class="latest-news-bg ${post.image}"></div>
               </a>
               <div class="news-text-box">
                 <h3><a href="${post.link}">${post.title}</a></h3>

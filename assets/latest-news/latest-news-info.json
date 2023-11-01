@@ -4,7 +4,7 @@
     "author": "Carlos y Daniel",
     "date": "2023-10-20",
     "excerpt": "Bongcloud > Defensa siciliana",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -12,7 +12,7 @@
     "author": "Admin",
     "date": "2019-12-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-2"
 },
 {
@@ -20,7 +20,7 @@
     "author": "Admin",
     "date": "2019-12-22",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -28,7 +28,7 @@
     "author": "Admin",
     "date": "2019-11-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -36,7 +36,7 @@
     "author": "Admin",
     "date": "2019-12-08",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -44,7 +44,7 @@
     "author": "Admin",
     "date": "2019-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-2"
 },
 {
@@ -52,6 +52,6 @@
     "author": "Admin",
     "date": "2013-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html",
+    "link": "assets/latest-news/single-news.html",
     "image": "news-bg-3"
 }]

@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", populateLatestNews);
 function createNewElement(index) {
     var newElement = document.createElement('div');
     newElement.className = 'owl-item cloned';
-    newElement.style.width = '197px';
-    newElement.style.marginRight = '30px';
+    newElement.style.width = '270px';
+    newElement.style.marginRight = '10px';
     newElement.innerHTML = `
     <div class="single-logo-item">
         <div class="single-latest-news">
@@ -53,6 +53,6 @@ function createNewElement(index) {
 }
 
 var randomCarousel = document.getElementById('random-carousel');
-for (let i = 2; i < Math.min(posts_info.length, 6); i++) {
+for (let i = 2; i < Math.min(posts_info.length, 8); i++) {
     randomCarousel.appendChild(createNewElement(i));
 }

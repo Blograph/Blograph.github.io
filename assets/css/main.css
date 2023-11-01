@@ -170,6 +170,7 @@ h4, .h4 {
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.75rem;
+  color: var(--primary_color);
 }
 
 @media only screen and (max-width: 575.96px) {
@@ -460,15 +461,17 @@ p:last-child {
   color: var(--secondary_color);
 }
 
-.accent-text {
-  color: var(--accent_color);
+.primary-text {
+  color: var(--primary_color);
 }
 
 .secondary-text {
   color: var(--secondary_color);
 }
 
-
+.accent-text {
+  color: var(--accent_color);
+}
 
 .blue-bg {
   background-color: #162133;
@@ -557,7 +560,8 @@ a.boxed-btn, a.bordered-btn, a.cart-btn {
 }
 
 .breadcrumb-text p {
-  color: var(--secondary_color);
+  color: var(--primary_color);
+  font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 7px;
@@ -588,7 +592,7 @@ a.boxed-btn, a.bordered-btn, a.cart-btn {
   width: 100%;
   height: 100%;
   content: "";
-  background-color: #07212e;
+  background-color: #000;
   z-index: -1;
   opacity: 0.8;
 }
@@ -2276,11 +2280,11 @@ a.video-play-btn {
 }
 
 .team-bg-2 {
-  background-image: url(../img/team/team-2.jpg);
+  background-image: url(../img/team/Daniel.jpg);
 }
 
 .team-bg-3 {
-  background-image: url(../img/team/team-3.jpg);
+  background-image: url(../img/team/Carlos.jpg);
 }
 
 .team-bg-4 {
@@ -2294,6 +2298,7 @@ a.video-play-btn {
   border-radius: 5px;
   background-color: #ddd;
 }
+
 
 .single-team-item {
   position: relative;

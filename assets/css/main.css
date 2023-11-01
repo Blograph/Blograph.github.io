@@ -19,6 +19,7 @@ Version: 1.0
   --primary_color: #4ab0b0;
   --secondary_color: #325d5d;
   --accent_color: #7b94ad;
+  --dark_color: #051922;
 }
 
 
@@ -956,7 +957,7 @@ a.mobile-show {
 }
 
 .footer-area {
-  background-color: #051922;
+  background-color: var(--dark_color);
   color: #fff;
   padding: 150px 0;
 }
@@ -1293,7 +1294,8 @@ div.owl-controls div.owl-nav div:hover {
 }
 
 .pagination-wrap ul li:hover a {
-  background-color: var(--secondary_color);
+  color: var(--secondary_color);
+  background-color: var(--dark_color);
 }
 
 .icons a i {
@@ -1785,9 +1787,9 @@ p.excerpt {
 }
 
 .pagination-wrap ul li a {
-  color: #6f6f6f;
   font-size: 15px;
-  background-color: #f3f3f3;
+  color: var(--text_color);
+  background-color: var(--secondary_color);
   display: inline-block;
   padding: 8px 14px;
   border-radius: 5px;
@@ -1796,9 +1798,6 @@ p.excerpt {
   border-radius: 50px;
 }
 
-.pagination-wrap ul li a.active {
-  background-color: var(--secondary_color);
-}
 
 .single-artcile-bg {
   background-size: cover;

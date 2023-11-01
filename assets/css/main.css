@@ -200,7 +200,7 @@ p {
   font-size: 1rem;
   letter-spacing: 0.1px;
   line-height: 1.8;
-  color: var(--secondary_color);
+  color: var(--text_color);
   margin: 0 0 1.25rem 0;
 }
 
@@ -1798,7 +1798,7 @@ p.excerpt {
   border-radius: 5px;
   margin: 3px;
   font-weight: 600;
-  border-radius: 50px;
+  border-radius: 10px;
 }
 
 
@@ -1815,12 +1815,14 @@ p.excerpt {
   font-weight: 600;
   line-height: 1.4;
   margin-bottom: 10px;
+  color: var(--text_color) !important;
+
 }
 
 .single-article-text p {
   font-size: 15px;
   line-height: 1.6;
-  color: var(--dark_color);
+  color: #999;
 }
 
 .comments-list-wrap {
@@ -1874,10 +1876,10 @@ span.comment-date {
 }
 
 .comment-text-body h4 a {
-  color: var(--dark_color);
+  color: var(--accent_color);
   font-size: 80%;
   margin-left: 10px;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid var(--accent_color);
 }
 
 .single-comment-body.child {
@@ -1885,7 +1887,7 @@ span.comment-date {
 }
 
 .comment-text-body p {
-  color: #888;
+  color: #999;
   line-height: 2;
   margin: 0;
 }
@@ -1900,16 +1902,19 @@ span.comment-date {
 }
 
 .comment-template form p input[type=text] {
-  border: 1px solid #ddd;
+  border: 1px solid #000;
+  background-color: #04699552;
+  color:  #fff;
   width: 49%;
   padding: 15px;
   border-radius: 5px;
   font-size: 15px;
-  color: var(--dark_color);
 }
 
 .comment-template form p input[type=email] {
-  border: 1px solid #ddd;
+  border: 1px solid #000;
+  background-color: #04699552;
+  color:  #fff !important;
   width: 49%;
   padding: 15px;
   border-radius: 5px;
@@ -1919,7 +1924,9 @@ span.comment-date {
 }
 
 .comment-template form p textarea {
-  border: 1px solid #ddd;
+  border: 1px solid #000;
+  background-color: #04699552;
+  color:  #fff !important;
   padding: 15px;
   font-size: 15px;
   color: var(--dark_color);
@@ -1950,7 +1957,7 @@ span.comment-date {
 }
 
 .sidebar-section ul li a {
-  color: #555;
+  color: #999;
   font-size: 15px;
 }
 
@@ -2370,21 +2377,26 @@ ul.social-link-team li a {
 .contact-form form p input[type=text], .contact-form form p input[type=tel], .contact-form form p input[type=email] {
   width: 49%;
   padding: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #000;
   border-radius: 3px;
+  background-color: #04699552;
+  color:  #fff;
 }
 
 .contact-form form p textarea {
-  border: 1px solid #ddd;
+  border: 1px solid #000;
   padding: 15px;
   height: 200px;
   border-radius: 3px;
   width: 100%;
   resize: none;
+  background-color: #04699552;
+  color:  #fff;
 }
 
 .contact-form-wrap {
-  background-color: #FBFBFB;
+  border: 1px solid #000;
+  background-color: #163745;
   padding: 45px 30px;
   border-radius: 5px;
 }

@@ -4,47 +4,54 @@
     "author": "Carlos y Daniel",
     "date": "2023-10-20",
     "excerpt": "Bongcloud > Defensa siciliana",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-1"
 },
 {
     "title": "A man's worth has its season, like tomato",
     "author": "Admin",
     "date": "2019-12-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-2"
 },
 {
     "title": "Good thoughts bear good fresh juicy fruit",
     "author": "Admin",
     "date": "2019-12-22",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-1"
 },
 {
     "title": "TEST2",
     "author": "Admin",
     "date": "2019-11-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-1"
 },
 {
     "title": "TEST3",
     "author": "Admin",
     "date": "2019-12-08",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-1"
 },
 {
     "title": "TEST4",
     "author": "Admin",
     "date": "2019-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-2"
 },
 {
     "title": "TEST5",
     "author": "Admin",
     "date": "2013-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "pages/single-news.html"
+    "link": "pages/single-news.html",
+    "image": "news-bg-3"
 }]

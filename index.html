@@ -2,6 +2,26 @@
 <html lang="en">
 
 <head>
+    <script>
+        let posts_info = JSON.parse(sessionStorage.getItem('posts_info'));
+    	async function fetchData() {
+        	try {
+            	const response = await fetch('assets/latest-news/latest-news-info.json');
+            	if (!response.ok) {
+                	throw new Error('Failed to fetch data');
+            	}
+            	const jsonData = await response.json();
+            	posts_info = jsonData;
+            	posts_info.sort((a, b) => new Date(b.date) - new Date(a.date));
+            	sessionStorage.setItem('posts_info', JSON.stringify(posts_info));
+        	} catch (error) {
+            	console.error(error);
+        	}
+   		}
+    	(async () => {
+        	await fetchData();
+    	})();
+    </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,8 +76,7 @@
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="section-title">
                         <h3><span class="green-text">The visual Blograph</span></h3>
-                        <p>In this ad-free blog, we present visual and interactive data analytics with a focus on networks in different topcis, all the way from chess to Lord of the Rings.
-                        Relax, bring some coffe and join us in this journey!
+                        <p>Our ad-free blog provides an immersive experience in data analytics through visually engaging and interactive content. We offer a diverse range of topics, including but not limited to chess openings, books characters relationships, and network analysis. Relax, bring some coffee, and join us on this journey! You can expect to embark on an journey to explore the intricacies of data analysis.
                         </p>
                     </div>
                 </div>
@@ -72,20 +91,21 @@
                 <!-- Content will be dynamically added here: see populateLatestNews.js -->
             </div>
         </div>
-    </div> <!-- end latest news -->
+    </div>
+    <!-- end latest news -->
     <!-- post carousel -->
     <div class="logo-carousel-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="logo-carousel-inner" id="random-carousel">
-                        <!-- Carousel items will be generated here: see populateLatestNews.js -->
+                    <div class="logo-carousel-inner owl-carousel owl-theme owl-loaded" id="random-carousel">
+                        <!-- Content will be dynamically added here: see populateLatestNews.js -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end post carousel -->
+    <!--end post carousel -->
     <!-- latest news button-->
     <div class="latest-news pt-150 pb-150">
         <div class="container">
@@ -124,7 +144,7 @@
     <!-- load sections js -->
     <script src="assets/js/load_sections.js"></script>
     <!-- update latest posts js -->
-    <script src="assets/js/populateLatestNews.js"></script>
+    <script src="assets/js/populateLatestNews.js" defer></script>
 </body>
 
 </html>

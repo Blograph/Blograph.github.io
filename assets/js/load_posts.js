@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Load the JSON file
-    $.getJSON('pages/post_info.json', function(data) {
+    $.getJSON('assets/latest-news/latest-news-info.json', function(data) {
         // Sort posts by date in descending order
         data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -22,7 +22,7 @@ $(document).ready(function() {
           <div class="col-lg-4 col-md-6">
             <div class="single-latest-news">
               <a href="${post.link}">
-                <div class="latest-news-bg news-bg-1"></div>
+                <div class="latest-news-bg ${post.image}"></div>
               </a>
               <div class="news-text-box">
                 <h3><a href="${post.link}">${post.title}</a></h3>

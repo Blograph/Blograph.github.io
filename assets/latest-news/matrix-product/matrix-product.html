@@ -146,6 +146,7 @@ void Mul2(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
 }
                             </code></pre>
                             <p>
+
                                 Despite our previous gains, we are still slow. We can do better. The reason for this sluggish performance lies in the access pattern for matrix B, which is not optimal. This is because we are not traversing the array linearly, which prevents efficient CPU load in cache memory, leading to cache misses. This issue becomes even more pronounced when dealing with larger matrices. We can increase the chache hit rate by transposing matrix B to traverse it linearlly. We will be faster even though we are doing extra memory allocations and computations.
                             </p>
                             <pre><code class="language-cpp">
@@ -207,7 +208,7 @@ void Mul4(const Matrix2D &A, const Matrix2D &B, Matrix2D &C, const size_t blockS
 }                         
                             </code></pre>
                             <p>
-                                Using blocks, we achieved a 2X speedup over the previous version and an 18x speedup over the naive non-parallel version. The problem with this approach is that performance will depend on the block size, and the only way of finding the optimal one is through experimentation. For this test, we used a fixed block size of 8.
+                                Using blocks, we achieved a 2x speedup over the previous version and an 18x speedup over the naive non-parallel version. The problem with this approach is that performance will depend on the block size, and the only way of finding the optimal one is through experimentation. For this test, we used a fixed block size of 8.
                             </p>
                             <p>
                                 To improve performance even more, we can use a local buffer. When using local buffers, we can hardcode the block size to allow the compiler time optimizations. Also, as each buffer is a local copy of data, we avoid false sharing issues. When using local buffers, we don't need to transpose the matrix anymore, and we can introduce an extra optimization, SIMD. SIMD stands for Single Instruction Multiple Data and allows each CPU core to do multiple operations with a single CPU cycle.

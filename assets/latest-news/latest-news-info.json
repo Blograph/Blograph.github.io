@@ -1,5 +1,13 @@
 [
 {
+    "title": "Optimizing Matrix-Matrix product",
+    "author": "Carlos",
+    "date": "2023-11-6",
+    "excerpt": "When applying clever optimization tricks, general matrix-matrix multiplication can become 120x faster.",
+    "link": "assets/latest-news/matrix-product/matrix-product.html",
+    "image": "matrix-product"
+},
+{
     "title": "Análisis de aperturas en ajedrez",
     "author": "Carlos y Daniel",
     "date": "2023-10-20",

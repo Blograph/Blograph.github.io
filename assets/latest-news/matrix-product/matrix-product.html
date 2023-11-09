@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <!-- title -->
+    <title>Single News</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Optimizing Matrix-Matrix product</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <div class="single-artcile-bg matrix-product"></div>
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> Admin</span>
+                                <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+                            </p>
+                            <h2>Optimizing Matrix-Matrix product</h2>
+                            <p>
+                                Matrix-matrix multiplication is a fundamental operation in linear algebra and is considered one of the most optimized operations. The inspiration for this post came from an amazing <a href="https://www.youtube.com/watch?v=QGYvbsHDPxo" target="_blank">video</a> by <a href="https://www.youtube.com/@depth-buffer" target="_blank">DepthBuffer</a>.
+                            </p>
+                            <p>
+                                The standard algorithm for matrix-matrix multiplication has a time complexity of O(n^3), which can be computationally expensive for large matrices. However, we can employ many optimization tricks to significantly improve the performance without altering the algorithm. To achieve this, we must take advantage of the full power of computer and identify what slows down our algorithms.
+                            </p>
+                            <p>
+                                To start, let's create a simple matrix class to simplify the code. We will be using C++ as it gives us high control of the memory.
+                            </p>
+                            <pre><code class="language-cpp">
+class Matrix2D {
+private:
+    const std::size_t N;
+    const std::size_t aligment = 32;
+public:
+    float *data;
+    Matrix2D(std::size_t N0) : N(N0) {
+        data = static_cast&ltfloat*>(std::aligned_alloc(aligment * alignof(float), N * N * sizeof(float)));
+        if (data == nullptr) {
+            throw std::bad_alloc(); // allocation failure
+        }
+    };
+    ~Matrix2D() {
+        free(data);
+    };
+    inline const std::size_t size() const {
+        return N;
+    };
+    float& operator()(std::size_t i, std::size_t j) {
+        return data[i * N + j];
+    }
+    const float& operator()(std::size_t i, std::size_t j) const {
+        return data[i * N + j];
+    }
+    float& operator[](std::size_t i) {
+        return data[i];
+    }
+    const float& operator[](std::size_t i) const {
+        return data[i];
+    }
+    void set_zero(void) {
+        #pragma omp parallel for
+        for (std::size_t i = 0; i < N; i++) {
+            for (std::size_t j = 0; j < N; j++) {
+                (*this)(i, j) = 0.0;
+            }
+        }
+    };
+};
+                            </code></pre>
+                            <p>
+                                We created the matrix as a one-dimensional array to improve performance. Also, we asked the compiler to ensure that the array is aligned in memory.
+                            </p>
+                            <p>
+                                The next step is to implement the naive general matrix-matrix multiplication:
+                            </p>
+                            <pre><code class="language-cpp">
+void Mul1(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
+    const std::size_t N = A.size();
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            for (std::size_t k = 0; k < N; ++k)
+                C(i, j) += A(i, k) * B(k, j);
+        }
+    }
+}
+                            </code></pre>
+                            <p>
+                                As DepthBuffer points out in the video, this algorithm is very slow and provides a performance far from optimal. One way we can make this faster is to use the multicore capabilities of the computer. When doing this in my 4-core laptop, we get a 3.7x speedup with 1024x1024 matrices.
+                            </p>
+                            <pre><code class="language-cpp">
+void Mul2(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
+    const std::size_t N = A.size();
+    #pragma omp parallel for
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            for (std::size_t k = 0; k < N; ++k)
+                C(i, j) += A(i, k) * B(k, j);
+        }
+    }
+}
+                            </code></pre>
+                            <p>
+                                Despite our previous gains, we are still slow. We can do better. The reason for this sluggish performance lies in the access pattern for matrix B, which is not optimal. This is because we are not traversing the array linearly, which prevents efficient CPU load in cache memory, leading to cache misses. This issue becomes even more pronounced when dealing with larger matrices. We can increase the chache hit rate by transposing matrix B to traverse it linearlly. We will be faster even though we are doing extra memory allocations and computations.
+                            </p>
+                            <pre><code class="language-cpp">
+void Mul3(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
+    const std::size_t N = A.size();
+    // Transpose matrix B
+    Matrix2D Bt(N);
+    #pragma omp parallel for
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            Bt(i, j) = B(j, i);
+        }
+    }
+    #pragma omp parallel for
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            for (std::size_t k = 0; k < N; ++k)
+                C(i, j) += A(i, k) * Bt(j, k);
+        }
+    }
+}
+                            </code></pre>
+                            <p>
+                                Despite the extra computations, we are 2.7 times faster than the previous version. This speedup is due to the improved spatial locality of the chache. However, we are still lacking in the temporal locality as we are accesing each entry multiple times. We would want to reause the loaded memory as much as possible. We can improve temporal locality by accesing the matrix with blocks instead of trying to traverse the entire rows and colums, thus reusing the loaded data.
+                            </p>
+                            <pre><code class="language-cpp">
+void Mul4(const Matrix2D &A, const Matrix2D &B, Matrix2D &C, const size_t blockSize) {
+    const std::size_t N = A.size();
+    // Transpose matrix B
+    Matrix2D Bt(N);
+    #pragma omp parallel for
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            Bt(i, j) = B(j, i);
+        }
+    }
+    const std::size_t blockNum = N / blockSize;
+    // Traverse blocks.
+    #pragma omp parallel for
+    for (std::size_t bi = 0; bi < blockNum; bi++) {
+        for (std::size_t bj = 0; bj < blockNum; bj++) {
+            for (std::size_t bk = 0; bk < blockNum; bk++) {
+                // Block GEMM.
+                for (std::size_t i = 0; i < blockSize; i++) {
+                    for (std::size_t j = 0; j < blockSize; j++) {
+                        std::size_t cIdx = bi * blockSize * blockNum * blockSize + i * blockNum * blockSize + bj * blockSize + j;
+                        float partial = 0;
+                        for (std::size_t k = 0; k < blockSize; k++) {
+                            std::size_t aIdx = bi * blockSize * blockNum * blockSize + i * blockNum * blockSize + bk * blockSize + k;
+                            std::size_t bIdx = bj * blockSize * blockNum * blockSize + j * blockNum * blockSize + bk * blockSize + k;
+                            partial += A[aIdx] * Bt[bIdx];
+                        }
+                        C[cIdx] += partial;
+                    }
+                }
+            }
+        }
+    }
+}                         
+                            </code></pre>
+                            <p>
+                                Using blocks, we achieved a 2X speedup over the previous version and an 18x speedup over the naive non-parallel version. The problem with this approach is that performance will depend on the block size, and the only way of finding the optimal one is through experimentation. For this test, we used a fixed block size of 8.
+                            </p>
+                            <p>
+                                To improve performance even more, we can use a local buffer. When using local buffers, we can hardcode the block size to allow the compiler time optimizations. Also, as each buffer is a local copy of data, we avoid false sharing issues. When using local buffers, we don't need to transpose the matrix anymore, and we can introduce an extra optimization, SIMD. SIMD stands for Single Instruction Multiple Data and allows each CPU core to do multiple operations with a single CPU cycle.
+                            </p>
+                            <pre><code class="language-cpp">
+#define BLOCK_SIZE 8
+alignas(64) float localA[BLOCK_SIZE][BLOCK_SIZE];
+alignas(64) float localB[BLOCK_SIZE][BLOCK_SIZE];
+alignas(64) float localC[BLOCK_SIZE][BLOCK_SIZE];
+#pragma omp threadprivate(localA, localB, localC)
+
+void Mul5(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
+    const std::size_t N = A.size();
+    std::size_t blockNum = N / BLOCK_SIZE;
+    // Traverse blocks.
+    #pragma omp parallel for
+    for (std::size_t bi = 0; bi < blockNum; bi++) {
+        for (std::size_t bj = 0; bj < blockNum; bj++) {
+            // Clear localC.
+            for (std::size_t i = 0; i < BLOCK_SIZE; i++) {
+                for (std::size_t j = 0; j < BLOCK_SIZE; j++) {
+                    localC[i][j] = 0;
+                }
+            }
+            for (std::size_t bk = 0; bk < blockNum; bk++) {
+                // Copy local block.
+                for (std::size_t i = 0; i < BLOCK_SIZE; i++) {
+                    for (std::size_t j = 0; j < BLOCK_SIZE; j++) {
+                        std::size_t aIdx = bi * BLOCK_SIZE * blockNum * BLOCK_SIZE + i * blockNum * BLOCK_SIZE + bk * BLOCK_SIZE + j;
+                        std::size_t bIdx = bk * BLOCK_SIZE * blockNum * BLOCK_SIZE + i * blockNum * BLOCK_SIZE + bj * BLOCK_SIZE + j;
+                        localA[i][j] = A[aIdx];
+                        localB[i][j] = B[bIdx];
+                    }
+                }
+                // Block GEMM.
+                for (std::size_t i = 0; i < BLOCK_SIZE; i++) {
+                    for (std::size_t k = 0; k < BLOCK_SIZE; k++) {
+                        #pragma omp simd
+                        for (std::size_t j = 0; j < BLOCK_SIZE; j++) {
+                            localC[i][j] += localA[i][k] * localB[k][j];
+                        }
+                    }
+                }
+            }
+            // Copy localC back.
+            for (std::size_t i = 0; i < BLOCK_SIZE; i++) {
+                for (std::size_t j = 0; j < BLOCK_SIZE; j++) {
+                    std::size_t cIdx = bi * BLOCK_SIZE * blockNum * BLOCK_SIZE + i * blockNum * BLOCK_SIZE + bj * BLOCK_SIZE + j;
+                    C[cIdx] = localC[i][j];
+                }
+            }
+        }
+    }
+}
+                            </code></pre>
+                            <p>
+                                The latest improvements have made our system 2.6 times faster than the previous version and a whopping 50 times faster than the original implementation. While this is an impressive upgrade, it is recommended to utilize one of the many linear algebra subprogram implementations available for even better performance. For instance, our most efficient version takes 100 ms to execute a 1024x1024 matrix multiplication, whereas Eigen completes the same operation in just 18 ms, which is almost six times faster.
+                            </p>
+                            <p>
+                                To conclude, we implemented several optimization techniques to achieve impressive performance gains. Additionally, we identified the cause of poor algorithm performance. Below is a plot depicting the performance of our algorithms for various matrix sizes.
+                            </p>
+                            <img src=”matrix-performance.png”>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="single-news.html">You will vainly look for fruit on it in autumn.</a></li>
+                                <li><a href="single-news.html">A man's worth has its season, like tomato.</a></li>
+                                <li><a href="single-news.html">Good thoughts bear good fresh juicy fruit.</a></li>
+                                <li><a href="single-news.html">Fall in love with the fresh orange</a></li>
+                                <li><a href="single-news.html">Why the berries always look delecious</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <script src="../../js/prism.js"></script>
+</body>
+
+</html>

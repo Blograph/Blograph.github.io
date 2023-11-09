@@ -57,10 +57,10 @@
                 <div class="col-lg-8">
                     <div class="single-article-section">
                         <div class="single-article-text">
-                            <div class="single-artcile-bg matrix-product"></div>
+                            <div class="single-artcile-bg news-bg-2"></div>
                             <p class="blog-meta">
-                                <span class="author"><i class="fas fa-user"></i> Admin</span>
-                                <span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 9 November, 2023</span>
                             </p>
                             <h2>Optimizing Matrix-Matrix product</h2>
                             <p>
@@ -146,7 +146,6 @@ void Mul2(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
 }
                             </code></pre>
                             <p>
-
                                 Despite our previous gains, we are still slow. We can do better. The reason for this sluggish performance lies in the access pattern for matrix B, which is not optimal. This is because we are not traversing the array linearly, which prevents efficient CPU load in cache memory, leading to cache misses. This issue becomes even more pronounced when dealing with larger matrices. We can increase the chache hit rate by transposing matrix B to traverse it linearlly. We will be faster even though we are doing extra memory allocations and computations.
                             </p>
                             <pre><code class="language-cpp">
@@ -270,7 +269,7 @@ void Mul5(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
                             <p>
                                 To conclude, we implemented several optimization techniques to achieve impressive performance gains. Additionally, we identified the cause of poor algorithm performance. Below is a plot depicting the performance of our algorithms for various matrix sizes.
                             </p>
-                            <img src=”matrix-performance.png”>
+                            <img src="matrix-performance.png">
                         </div>
                     </div>
                 </div>

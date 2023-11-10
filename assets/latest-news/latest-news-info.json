@@ -1,5 +1,13 @@
 [
 {
+    "title": "Conding an Interactive Particle Simulation",
+    "author": "Carlos",
+    "date": "2023-11-10",
+    "excerpt": "This post introduces a tutorial on coding an interactive particle simulation using JavaScript and HTML5 canvas.",
+    "link": "assets/latest-news/interactive-particles/interactive-particles.html",
+    "image": "news-bg-3"
+},
+{
     "title": "Optimizing Matrix-Matrix product",
     "author": "Carlos",
     "date": "2023-11-9",
@@ -12,7 +20,7 @@
     "author": "Carlos y Daniel",
     "date": "2023-10-20",
     "excerpt": "Bongcloud > Defensa siciliana",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -20,7 +28,7 @@
     "author": "Admin",
     "date": "2019-12-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-2"
 },
 {
@@ -28,7 +36,7 @@
     "author": "Admin",
     "date": "2019-12-22",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -36,7 +44,7 @@
     "author": "Admin",
     "date": "2019-11-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -44,7 +52,7 @@
     "author": "Admin",
     "date": "2019-12-08",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-1"
 },
 {
@@ -52,7 +60,7 @@
     "author": "Admin",
     "date": "2019-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-2"
 },
 {
@@ -60,6 +68,6 @@
     "author": "Admin",
     "date": "2013-01-27",
     "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/single-news.html",
+    "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-3"
 }]

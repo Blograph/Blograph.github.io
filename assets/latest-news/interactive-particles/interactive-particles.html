@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Conding an Interactive Particle Simulation</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+    <style>
+    canvas {
+        background-color: #2d2d2d;
+        width: 100%;
+        display: block;
+        image-rendering: crisp-edges;
+        position: relative;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Conding an Interactive Particle Simulation</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 9 November, 2023</span>
+                            </p>
+                            <h2>Conding an Interactive Particle Simulation</h2>
+                            <p>
+                                In this article we will create a straightforward particle simulation similar to the one below. In this simulation, the particles do not interact with one another, but they interact with the mouse. Additionally, we will cover how to create the effect that makes the particles appear as if they are drifting upwards. Most importantly, we will also learn how to make them glow!
+                            </p>
+                            <canvas id="particleCanvas"></canvas>
+                            <p>
+                                To start, let's create a simple vector class to make things easier
+                            </p>
+                            <pre><code class="language-js">
+    class Vector {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        multiply(scalar) {
+            return new Vector(this.x * scalar, this.y * scalar);
+        }
+        add(other) {
+            return new Vector(this.x + other.x, this.y + other.y);
+        }
+        substract(other) {
+            return new Vector(this.x - other.x, this.y - other.y);
+        }
+        norm() {
+            return Math.sqrt(this.x ** 2 + this.y ** 2);
+        }
+    };
+                            </code></pre>
+                            <p>
+                                Now, we need a class to represent the particle. In this simulation, we only need position, velocity, acceleration, and radius. We will assume all particles have the same mass.
+                            </p>
+                            <pre><code class="language-js">
+    class Particle {
+        constructor(position, velocity, radius, color = '#3cb5b3') {
+            this.position = position;
+            this.velocity = velocity;
+            this.radius = radius;
+            this.color = color;
+            this.acceleration = new Vector(0, 0);
+        }
+                            </code></pre>
+                            <p>
+                                To make development easier, we need to be able to see the particles. For this, we need to write a bit of HTML and a function to draw them.
+                                For the HTML:
+                            </p>
+                            <pre><code class="language-html">
+&lt!DOCTYPE html>
+&lthtml lang="en">
+
+&lthead>
+    &ltmeta charset="UTF-8">
+    &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+    &ltstyle>
+    canvas {
+        border: 1px solid #000;
+        background-color: #2d2d2d;
+    }
+    &lt/style>
+    &lttitle>Particle Simulation&lt/title>
+&lt/head>
+
+&ltbody>
+    &ltcanvas id="particleCanvas" width="500" height="500">&lt/canvas>
+    &ltscript src="particle_simulation.js">&lt/script>
+&lt/body>
+
+&lt/html>
+                            </code></pre>
+                            <p>
+                                To draw the particles:
+                            </p>
+                            <pre><code class="language-js">
+    function draw(particles) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(particle => {
+            ctx.beginPath();
+            ctx.arc(particle.position.x, particle.position.y, particle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = particle.color;
+            ctx.fill();
+            ctx.closePath();
+        });
+    }
+    const canvas = document.getElementById('particleCanvas');
+                            </code></pre>
+                            <p>
+                                Now, we need to make the particles move. To update the position of the particles, we will use the simplest integration method: <a href="https://en.wikipedia.org/wiki/Euler_method" target="_blank">Direct Euler</a>.
+                            </p>
+                            <pre><code class="language-cpp">
+    class Particle {
+        // Constructor
+        update(dt) {
+            // Update velocity
+            this.velocity = this.velocity.add(this.acceleration.multiply(dt));
+
+            // Ensure minimun velocity
+            if (this.velocity.norm() < min_speed) {
+                this.velocity = this.velocity.multiply(min_speed / this.velocity.norm());
+            }
+            // Update position
+            this.position = this.position.add(this.velocity.multiply(dt));
+
+            const scaling = 1.4;
+            if (this.position.x < 0) this.position.x += scaling * canvas.width;
+            if (this.position.x > canvas.width) this.position.x -= scaling * canvas.width;
+            if (this.position.y < 0) this.position.y += scaling * canvas.height;
+            if (this.position.y > canvas.height) this.position.y -= scaling * canvas.height;
+        }
+    };                         
+                            </code></pre>
+                            <p>
+                                We have made a modification to guarantee that particles maintain a minimum velocity. This is important as we want the movement of the particles to be organic. However, to ensure the stability of the simulation, we have to apply some damping, which inevitably causes the particles to come to a stop at some point. We aim to maintain the organic look of the particles by keeping them at a nearly constant speed.
+                            </p>
+                            <p>
+                                Now, we need to make the main simulation loop. Also, we will add the interaction with the mouse and the drifting effect as a random force.
+                            </p>
+                            <pre><code class="language-js">
+    function updateMouseParticle(event) {
+        const rect = canvas.getBoundingClientRect();
+        mouse_particle.position.x = event.clientX - rect.left;
+        mouse_particle.position.y = event.clientY - rect.top;
+    }
+
+    function updateParticles(particles, dt) {
+        // Calculate forces
+        var r;
+        var d;
+        for (let i = 0; i < particles.length; i++) {
+            // Reset forces
+            particles[i].acceleration = new Vector(0, 0);
+
+            // Collision with mouse particle
+            r = particles[i].position.substract(mouse_particle.position);
+            d = particles[i].radius + mouse_particle.radius - r.norm();
+            if (d > 0) {
+                particles[i].acceleration = r.multiply(60 * d / r.norm());
+            }
+
+            // Viscouse damping
+            particles[i].acceleration = particles[i].acceleration.add(particles[i].velocity.multiply(-0.8));
+
+            // Add wind
+            particles[i].acceleration = particles[i].acceleration.add(new Vector(3 * Math.random(), -2.5));
+        }
+        particles.forEach(particle => particle.update(dt));
+    }
+
+    function animate() {
+        updateParticles(particles, 0.01);
+        draw(particles);
+        requestAnimationFrame(animate);
+    }
+    const min_speed = 20;
+    canvas.addEventListener('mousemove', updateMouseParticle);
+    const particles = initializeParticles(20);
+    const mouse_particle = new Particle(new Vector(0, 0), new Vector(0, 0), 25);
+                            </code></pre>
+                            <p>
+                                We simulate the interaction with the mouse, creating a particle whose coordinates are the same as the mouse. Also, we add a simple collision detection and a spring-like force if they are in contact with the mouse. The strength of the interaction is determined by the constant. The particles were instantiated with random positions and velocities.
+                            </p>
+                            <p>
+                                Lastly, the only missing thig is to make the particles glow, as promised. Inside the draw function add:
+                            </p>
+                            <pre><code class="language-js">
+        particles.forEach(particle => {
+            ctx.beginPath();
+            ctx.arc(particle.position.x, particle.position.y, particle.radius, 0, Math.PI * 2);
+
+            // Add glowing effect
+            ctx.shadowBlur = 2; // Adjust the shadow blur to control the glow intensity
+            ctx.shadowColor = particle.color;
+
+            ctx.fillStyle = particle.color;
+            ctx.fill();
+            ctx.closePath();
+
+            // Reset shadow properties
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = 'transparent';
+        });
+                            </code></pre>
+                            <p>
+                                To conclude, we coded a simple interactive particle simulation. It also look great! Note that this simulation is not particulary performant. If you want to read a post about performance, read this <a href="../matrix-product/matrix-product.html">post</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../matrix-product/matrix-product.html">Optimizing Matrix-Matrix product.</a></li>
+                                <li><a href="single-news.html">A man's worth has its season, like tomato.</a></li>
+                                <li><a href="single-news.html">Good thoughts bear good fresh juicy fruit.</a></li>
+                                <li><a href="single-news.html">Fall in love with the fresh orange</a></li>
+                                <li><a href="single-news.html">Why the berries always look delecious</a></li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">Particle Simulation</a></li>
+                                <li><a href="#">Numeric Methods</a></li>
+                                <li><a href="#">Algorithms</a></li>
+                                <li><a href="#">Physics</a></li>
+                                <li><a href="#">Programing</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <script src="../../js/prism.js"></script>
+    <script src="particle_simulation.js"></script>
+</body>
+
+</html>

@@ -67,7 +67,7 @@
                                 Matrix-matrix multiplication is a fundamental operation in linear algebra and is considered one of the most optimized operations. The inspiration for this post came from an amazing <a href="https://www.youtube.com/watch?v=QGYvbsHDPxo" target="_blank">video</a> by <a href="https://www.youtube.com/@depth-buffer" target="_blank">DepthBuffer</a>.
                             </p>
                             <p>
-                                The standard algorithm for matrix-matrix multiplication has a time complexity of O(n^3), which can be computationally expensive for large matrices. However, we can employ many optimization tricks to significantly improve the performance without altering the algorithm. To achieve this, we must take advantage of the full power of computer and identify what slows down our algorithms.
+                                The standard algorithm for matrix-matrix multiplication has a time complexity of O(n^3), which can be computationally expensive for large matrices. However, we can employ many optimization tricks to significantly improve the performance without altering the algorithm. To achieve this, we must take advantage of the full power of the computer and identify what slows down our algorithms.
                             </p>
                             <p>
                                 To start, let's create a simple matrix class to simplify the code. We will be using C++ as it gives us high control of the memory.
@@ -210,7 +210,7 @@ void Mul4(const Matrix2D &A, const Matrix2D &B, Matrix2D &C, const size_t blockS
                                 Using blocks, we achieved a 2x speedup over the previous version and an 18x speedup over the naive non-parallel version. The problem with this approach is that performance will depend on the block size, and the only way of finding the optimal one is through experimentation. For this test, we used a fixed block size of 8.
                             </p>
                             <p>
-                                To improve performance even more, we can use a local buffer. When using local buffers, we can hardcode the block size to allow the compiler time optimizations. Also, as each buffer is a local copy of data, we avoid false sharing issues. When using local buffers, we don't need to transpose the matrix anymore, and we can introduce an extra optimization, SIMD. SIMD stands for Single Instruction Multiple Data and allows each CPU core to do multiple operations with a single CPU cycle.
+                                To improve performance even more, we can use a local buffer. When using local buffers, we can hardcode the block size to allow compile time optimizations. Also, as each buffer is a local copy of data, we avoid false sharing issues. When using local buffers, we don't need to transpose the matrix anymore, and we can introduce an extra optimization, SIMD. SIMD stands for Single Instruction Multiple Data and allows each CPU core to do multiple operations with a single CPU cycle.
                             </p>
                             <pre><code class="language-cpp">
 #define BLOCK_SIZE 8
@@ -267,7 +267,7 @@ void Mul5(const Matrix2D &A, const Matrix2D &B, Matrix2D &C) {
                                 The latest improvements have made our system 2.6 times faster than the previous version and a whopping 50 times faster than the original implementation. While this is an impressive upgrade, it is recommended to utilize one of the many linear algebra subprogram implementations available for even better performance. For instance, our most efficient version takes 100 ms to execute a 1024x1024 matrix multiplication, whereas Eigen completes the same operation in just 18 ms, which is almost six times faster.
                             </p>
                             <p>
-                                To conclude, we implemented several optimization techniques to achieve impressive performance gains. Additionally, we identified the cause of poor algorithm performance. Below is a plot depicting the performance of our algorithms for various matrix sizes.
+                                To conclude, we implemented several optimization techniques to achieve impressive performance gains. Additionally, we identified the cause of poor algorithm performance. Below is a plot depicting the performance of our algorithms for various matrix sizes. Note that there are better <a href="https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm" target="_blank">algorithms</a> for multiplying big matrices which we didn't cove as we focused on the optimizations we can do to improve the performance of our algorithms.
                             </p>
                             <img src="matrix-performance.png">
                         </div>

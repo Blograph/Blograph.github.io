@@ -1,5 +1,13 @@
 [
 {
+    "title": "Interactive Timelines with Timeline.js",
+    "author": "Carlos",
+    "date": "2023-11-11",
+    "excerpt": "Dive into the past with flair! Unleash the power of Timeline.js to craft immersive, interactive timelines that transform history into a captivating digital narrative. Join us as we explore the art of dynamic storytelling and bring the past to life in just a scroll.",
+    "link": "assets/latest-news/time-line/time-line.html",
+    "image": "news-bg-4"
+},
+{
     "title": "Coding an Interactive Particle Simulation",
     "author": "Carlos",
     "date": "2023-11-10",

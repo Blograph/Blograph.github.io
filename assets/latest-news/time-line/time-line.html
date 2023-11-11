@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Interactive Timelines with Timeline.js</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+    <!-- Link to the Timeline.js library -->
+    <link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Interactive Timelines with Timeline.js</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 11 November, 2023</span>
+                            </p>
+                            <h2>Interactive Timelines with Timeline.js</h2>
+                            <div id='timeline-embed' style="width: 100%; height: 700px"></div>
+                            <p>
+                                In a world overflowing with information, our ability to comprehend and appreciate historical events often hinges on how effectively we can organize and present that information. Imagine a tool that not only chronicles the past but also engages your audience in an immersive journey through time – that's where <a href="https://timeline.knightlab.com/" target="_blank">Timeline.js</a> comes into play.
+                                In the digital age, conveying historical narratives has evolved beyond static text and images. Interactive timelines have emerged as dynamic storytelling tools, offering a captivating way to explore events, milestones, and cultural shifts.
+                                In this post, we'll embark on a journey of discovery, exploring the features and functionalities of Timeline.js, a versatile and user-friendly timeline creation tool. We'll delve into the art of crafting timelines that not only inform but also captivate and educate your audience. So, buckle up as we unravel the secrets of building interactive timelines that bring history to life in the digital realm.
+                            </p>
+                            <p>
+                                To start, we need a simple HTML to visualize the timeline and import all the necesary Javascript.
+                            </p>
+                            <pre><code class="language-js">
+&lt!DOCTYPE html>
+&lthtml lang="en">
+
+&lthead>
+    &ltmeta charset="UTF-8">
+    &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+    &lttitle>Timeline Example&lt/title>
+    <!-- Link to the Timeline.js library -->
+    &ltlink title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+    &ltscript src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js">&lt/script>
+    &ltdiv id='timeline-embed' style="width: 100%; height: 700px">&lt/div>
+&ltbody>
+    &ltscript type="text/javascript">
+    var options = {
+        language: "en",
+    }
+    var timeline_json = { ... };
+    window.timeline = new TL.Timeline('timeline-embed', timeline_json, options);
+    &lt/script>
+&lt/body>
+
+&lt/html>
+                            </code></pre>
+                            <p>
+                                Simple, isn't it? This is all we need to create the timeline. For more information about the JS options read <a href="https://timeline.knightlab.com/docs/instantiate-a-timeline.html" target="_blank">here</a> and <a href="https://timeline.knightlab.com/docs/options.html" target="_blank">here</a>. Although, notice the timeline_json variable. Here is where all the magic happens. Learn about Timeline.js JSON <a href="https://timeline.knightlab.com/docs/json-format.html" target="_blank">format</a>. For the timeline we are going to do today, we only need two things. Fist, we need a title, and second, some events. The events and the title should look like this:
+                            </p>
+                            <pre><code class="language-js">
+var timeline_json = {
+        "title": {
+            "media": {
+                "url": "",
+                "caption": "TILTE"
+            },
+            "text": {
+                "headline": "TILTE",
+                "text": "&ltp>DESCRIPTION&lt/p>"
+            },
+            "background": {
+                "color": "#2d2d2d"
+            }
+        },
+        "events": [{
+                "media": {
+                    "url": "",
+                    "thumbnail": ""
+                },
+                "start_date": {
+                    "month": "",
+                    "day": "",
+                    "year": ""
+                },
+                "end_date": {
+                    "month": "",
+                    "day": "",
+                    "year": ""
+                },
+                "text": {
+                    "headline": "EVENT NAME",
+                    "text": "&ltstrong>TAGS&lt/strong>, &ltstrong>TAGS&lt/strong> &ltp>Description&lt/p> &lta href='' target='_blank'>EXTERNAL REFERENCES&lt/a>"
+                },
+                "background": {
+                    "url": "",
+                    "color": "#2d2d2d"
+                }
+            },
+            .
+            .
+            .
+                            </code></pre>
+                            <p>
+                                Let's view this piece by piece. Let's start with media: We can add videos, pictures, and more through a URL. We can also add a caption for the media we included. The second element is the text. Here, we can add the title of the event and a description. The text section supports HTML syntax. Therefore, we can impose the formatting we want. There are many options for the background. Here, we limit ourselves to a solid color or an image. There are many more options. Make sure to check the documentation if you want a more customized timeline.
+                            </p>
+                            <p>
+                                Check out the original timeline by <a href="https://www.britannica.com/story/timeline-of-the-spanish-civil-war" target="_blank">Britannica</a>. The events of the timeline were taken from there.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../interactive-particles/interactive-particles.html">Coding an Interactive Particle Simulation.</a></li>
+                                <li><a href="../matrix-product/matrix-product.html">Optimizing Matrix-Matrix product.</a></li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">Interactive Visualization</a></li>
+                                <li><a href="#">Data Visualization</a></li>
+                                <li><a href="#">Programing</a></li>
+                                <li><a href="#">Resources</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <script src="../../js/prism.js"></script>
+    <!-- Link to the Timeline.js library -->
+    <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+    <script src="time-line.js"></script>
+</body>
+
+</html>

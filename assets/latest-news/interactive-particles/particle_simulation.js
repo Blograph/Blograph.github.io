@@ -96,6 +96,23 @@
         mouse_particle.position.y = (event.clientY - rect.top) * scaleY;
     }
 
+    canvas.addEventListener('touchmove', handleTouchMove);
+
+    function handleTouchMove(event) {
+        event.preventDefault(); // Prevent default behavior (e.g., scrolling)
+
+        // Use the first touch position for simplicity (you can enhance it for multiple touches)
+        const touch = event.touches[0];
+
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        // Calculate the touch position relative to the canvas
+        mouse_particle.position.x = (touch.clientX - rect.left) * scaleX;
+        mouse_particle.position.y = (touch.clientY - rect.top) * scaleY;
+    }
+
 
     function updateParticles(particles, dt) {
         // Calculate forces

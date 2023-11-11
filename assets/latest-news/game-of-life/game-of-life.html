@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Interactive Conway Game of Life</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+    <style>
+    .grid-container {
+        width: 100%;
+        display: grid;
+    }
+
+    .grid-item {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Interactive Conway Game of Life</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 15 November, 2023</span>
+                            </p>
+                            <h2>Interactive Conway Game of Life</h2>
+                            <p>
+                                <div class="grid-container" id="gridContainer"></div>
+                                <button onclick="startGame()">Start</button>
+                                <button onclick="stopGame()">Stop</button>
+                                <button onclick="clearGrid()">Clear</button>
+                            </p>
+                            <p>
+                                In this post, we're going to dive into the fascinating world of cellular automata and explore a classic example known as <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" target="_blank">Conway's Game of Life</a>. What makes this tutorial unique is that we'll implement the Game of Life using JavaScript and we can color grid cells with the mouse.
+                            </p>
+                            <p>
+                                Conway's Game of Life is a cellular automaton devised by the mathematician John Conway in 1970. Despite its simple rules, the Game of Life exhibits complex and unpredictable behavior, making it an intriguing subject for study and a playground for experimenting with numerical methods.
+                            </p>
+                            <h2>Rules of Conway's Game of Life:</h2>
+                            <ul>
+                                <li><strong>If a live cell has 0 or 1 live neighbors, it will die in the next generation.</strong>
+                                </li>
+                                <li><strong>If a live cell has 2 or 3 live neighbors, it will survive to the next generation.</strong>
+                                </li>
+                                <li><strong>If a live cell has 4 or more live neighbors, it will die due to overcrowding.</strong>
+                                </li>
+                                <li><strong>If a dead cell has exactly 3 live neighbors, it becomes alive in the next generation due to reproduction.</strong>
+                                </li>
+                            </ul>
+                            <p>
+                                To Start, we need a grid. So, lets create one:
+                            </p>
+                            <pre><code class="language-html">
+&lt!DOCTYPE html>
+&lthtml lang="en">
+
+&lthead>
+    &ltmeta charset="UTF-8">
+    &ltmeta name="viewport" content="width=device-width, initial-scale=1.0">
+    &lttitle>Conway's Game of Life&lt/title>
+    &ltstyle>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(30, 20px);
+        gap: 1px;
+    }
+
+    .grid-item {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    &lt/style>
+&lt/head>
+
+&ltbody>
+    &ltdiv class="grid-container" id="gridContainer">&lt/div>
+    &ltscript>
+    const numRows = 30;
+    const numCols = 30;
+    const gridContainer = document.getElementById('gridContainer');
+
+    function createGrid() {
+        gridContainer.innerHTML = '';
+        gridContainer.style.gridTemplateColumns = `repeat(${numCols}, 20px)`;
+
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+                const cell = document.createElement('div');
+                cell.classList.add('grid-item');
+                cell.addEventListener('mousedown', () => handleMouseDown(i, j));
+                cell.addEventListener('mouseenter', () => handleMouseEnter(i, j));
+                gridContainer.appendChild(cell);
+            }
+        }
+    }
+    function handleMouseDown(row, col) {
+        isMouseDown = true;
+        grid[row][col] = 1;
+        updateGrid();
+    }
+
+    function handleMouseEnter(row, col) {
+        if (isMouseDown) {
+            grid[row][col] = 1;
+            updateGrid();
+        }
+    }
+    createGrid();
+    &lt/script>
+&lt/body>
+
+&lt/html>
+                            </code></pre>
+                            <p>
+                                Here, we created a simple CSS style for the grid elements. The next step is to be able to fill the grid. Also, note that we added some code to control when the user wants to color a cell with the mouse. Now, we define the functions to color a cell, update the grid, and detect if the mouse is held down.
+                            </p>
+                            <pre><code class="language-js">
+    function createEmptyGrid() {
+        return Array.from({ length: numRows }, () =>
+            Array.from({ length: numCols }, () => 0)
+        );
+    }
+
+    function updateGrid() {
+        const cells = document.querySelectorAll('.grid-item');
+        cells.forEach((cell, index) => {
+            const row = Math.floor(index / numCols);
+            const col = index % numCols;
+            cell.style.backgroundColor = grid[row][col] === 1 ? 'black' : '';
+        });
+    }
+
+    document.addEventListener('mouseup', () => {
+        isMouseDown = false;
+    });
+
+    let isMouseDown = false;
+    let grid = createEmptyGrid();
+                            </code></pre>
+                            <p>
+                                At this point, you should be able to click on a cell and color it black. What's left is to make it play Conway's game of life. As a first step, let's count how many neighbors each cell has:
+                            </p>
+                            <pre><code class="language-js">
+    function countNeighbors(row, col) {
+        let count = 0;
+        const offsets = [-1, 0, 1];
+
+        offsets.forEach((offsetRow) => {
+            offsets.forEach((offsetCol) => {
+                const neighborRow = row + offsetRow;
+                const neighborCol = col + offsetCol;
+
+                if (
+                    neighborRow >= 0 &&
+                    neighborRow < numRows &&
+                    neighborCol >= 0 &&
+                    neighborCol < numCols &&
+                    !(offsetRow === 0 && offsetCol === 0)
+                ) {
+                    count += grid[neighborRow][neighborCol];
+                }
+            });
+        });
+
+        return count;
+    }
+
+                            </code></pre>
+                            <p>
+                                Then, we need to update the grid according to the game of life rules. It's important to note that we need to update the grid after we finish the court. Else, the results will be wrong.
+                            </p>
+                            <pre><code class="language-js">
+    function updateGame() {
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+                neighbor_cout[i][j] = countNeighbors(i, j);
+            }
+        }
+
+        for (let i = 0; i < numRows; i++) {
+            for (let j = 0; j < numCols; j++) {
+                if (grid[i][j] === 1) {
+                    grid[i][j] = neighbor_cout[i][j] === 2 || neighbor_cout[i][j] === 3 ? 1 : 0;
+                } else {
+                    grid[i][j] = neighbor_cout[i][j] === 3 ? 1 : 0;
+                }
+            }
+        }
+        updateGrid();
+    }
+
+    function startGame() {
+        intervalId = setInterval(updateGame, 150);
+    }
+    startGame();
+
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../time-line/time-line.html">Interactive Timelines with Timeline.js.</a></li>
+                                <li><a href="../interactive-particles/interactive-particles.html">Coding an Interactive Particle Simulation.</a></li>
+                                <li><a href="../matrix-product/matrix-product.html">Optimizing Matrix-Matrix product.</a></li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">Game of Life</a></li>
+                                <li><a href="#">Numeric Methods</a></li>
+                                <li><a href="#">Interactive Visualization</a></li>
+                                <li><a href="#">Optimization</a></li>
+                                <li><a href="#">Programing</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <!-- code sintax highlight -->
+    <script src="../../js/prism.js"></script>
+    <!-- game of life js -->
+    <script src="game-of-life.js"></script>
+</body>
+
+</html>

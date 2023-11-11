@@ -1,5 +1,13 @@
 [
 {
+    "title": "Interactive Conway Game of Life",
+    "author": "Carlos",
+    "date": "2023-11-15",
+    "excerpt": "Dive into the past with flair! Unleash the power of Timeline.js to craft immersive, interactive timelines that transform history into a captivating digital narrative. Join us as we explore the art of dynamic storytelling and bring the past to life in just a scroll.",
+    "link": "assets/latest-news/game-of-life/game-of-life.html",
+    "image": "news-bg-5"
+},
+{
     "title": "Interactive Timelines with Timeline.js",
     "author": "Carlos",
     "date": "2023-11-11",
@@ -30,52 +38,4 @@
     "excerpt": "Bongcloud > Defensa siciliana",
     "link": "assets/latest-news/Example/single-news.html",
     "image": "news-bg-1"
-},
-{
-    "title": "A man's worth has its season, like tomato",
-    "author": "Admin",
-    "date": "2019-12-27",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-2"
-},
-{
-    "title": "Good thoughts bear good fresh juicy fruit",
-    "author": "Admin",
-    "date": "2019-12-22",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-1"
-},
-{
-    "title": "TEST2",
-    "author": "Admin",
-    "date": "2019-11-27",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-1"
-},
-{
-    "title": "TEST3",
-    "author": "Admin",
-    "date": "2019-12-08",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-1"
-},
-{
-    "title": "TEST4",
-    "author": "Admin",
-    "date": "2019-01-27",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-2"
-},
-{
-    "title": "TEST5",
-    "author": "Admin",
-    "date": "2013-01-27",
-    "excerpt": "Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi.",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-3"
 }]

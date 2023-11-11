@@ -1,6 +1,6 @@
 const gridContainer = document.getElementById('gridContainer');
 const numRows = 20;
-const numCols = 35;
+const numCols = 30;
 let isMouseDown = false;
 let grid = createEmptyGrid();
 let neighbor_cout = createEmptyGrid();
@@ -16,8 +16,8 @@ function createGrid() {
             cell.classList.add('grid-item');
             cell.addEventListener('mousedown', () => handleMouseDown(i, j));
             cell.addEventListener('mouseenter', () => handleMouseEnter(i, j));
-            cell.addEventListener('touchstart', (event) => handleTouchStart(event, i, j));
-            cell.addEventListener('touchmove', (event) => handleTouchMove(event, i, j));
+            cell.addEventListener('touchstart', () => handleTouchStart(i, j));
+            cell.addEventListener('touchmove', () => handleTouchMove(i, j));
             gridContainer.appendChild(cell);
         }
     }
@@ -56,14 +56,12 @@ function handleMouseEnter(row, col) {
 }
 
 function handleTouchStart(event, row, col) {
-    event.preventDefault();
     isMouseDown = true;
     grid[row][col] = 1;
     updateGrid();
 }
 
 function handleTouchMove(event, row, col) {
-    event.preventDefault();
     if (isMouseDown) {
         grid[row][col] = 1;
         updateGrid();

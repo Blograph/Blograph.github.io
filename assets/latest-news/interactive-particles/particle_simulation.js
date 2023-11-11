@@ -96,8 +96,6 @@
         mouse_particle.position.y = (event.clientY - rect.top) * scaleY;
     }
 
-    canvas.addEventListener('touchmove', handleTouchMove);
-
     function handleTouchMove(event) {
         event.preventDefault(); // Prevent default behavior (e.g., scrolling)
 
@@ -147,6 +145,7 @@
     const min_speed = 20;
     const canvas = document.getElementById('particleCanvas');
     canvas.addEventListener('mousemove', updateMouseParticle);
+    canvas.addEventListener('touchmove', handleTouchMove);
     canvas.height = 150;
     const particles = initializeParticles(350);
     const mouse_particle = new Particle(new Vector(0, 0), new Vector(0, 0), 30, '#b86014');

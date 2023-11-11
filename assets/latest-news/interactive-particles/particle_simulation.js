@@ -146,7 +146,7 @@
     const canvas = document.getElementById('particleCanvas');
     canvas.addEventListener('mousemove', updateMouseParticle);
     canvas.addEventListener('touchmove', handleTouchMove);
-    canvas.height = 150;
+    canvas.height = 200;
     const particles = initializeParticles(350);
     const mouse_particle = new Particle(new Vector(0, 0), new Vector(0, 0), 30, '#b86014');
     const show_mouse = false;

@@ -224,7 +224,7 @@
     }
 
     function touch_start_handler(e) {
-        e.preventDefault();
+        //e.preventDefault();
         var rect = canvas.getBoundingClientRect();
         mouse.x = mouse.px = (e.touches[0].pageX - rect.left) * (canvas.width / rect.width);
         mouse.y = mouse.py = (e.touches[0].pageY - rect.top) * (canvas.height / rect.height);
@@ -246,7 +246,7 @@
     }
 
     function touch_move_handler(e) {
-        e.preventDefault(); //Prevents the default action from happening
+        //e.preventDefault(); //Prevents the default action from happening
         mouse.px = mouse.x;
         mouse.py = mouse.y;
         var rect = canvas.getBoundingClientRect();

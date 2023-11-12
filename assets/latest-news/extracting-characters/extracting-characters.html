@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Extracting Character Connections from a Book</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Extracting Character Connections from a Book</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <img src="/assets/img/latest-news/news-bg-7.jpg" class="img-fluid">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 1 November, 2023</span>
+                            </p>
+                            <h2>Extracting Character Connections from a Book</h2>
+                            <p>
+                                In this post, we will continue our series on social network analysis, this post delves into natural language processing (NLP) to uncover hidden connections within the text of the first book of the Witcher series. By leveraging NLP techniques, we'll demonstrate how to extract meaningful insights, identify relationships, and prepare the groundwork for constructing a social network. Be sure to follow this three-part series, where we progress from web scraping character data to NLP-driven analysis, providing a comprehensive guide to unraveling social networks in the Witcher universe. You can download the book <a href="https://github.com/thu-vu92/the_witcher_network/blob/main/data/1%20The%20Last%20Wish.txt" target="_blank">here</a>. If you haven't read yet the first part, click <a href="../web-scraping/web-scraping.html">here</a> as we will need the list of characters we obtained in that post.
+                            </p>
+                            <p>
+                                To start, we need to load some Python modules:
+                            </p>
+                            <pre><code class="language-py">
+import re
+import pandas as pd 
+from spacy import displacy
+import spacy
+#!python3 -m spacy download en_core_web_sm
+# Load spacy English languague model
+NER = spacy.load("en_core_web_sm")# Load spacy English languague model
+                            </code></pre>
+                            <p>
+                                Now, lets load the book and use spacy to analyze it.
+                            </p>
+                            <pre><code class="language-py">
+book_text = open('book_name.txt').read()
+book_doc = NER(book_text)
+                            </code></pre>
+                            <p>
+                                Now, lets load the character database we obtained from the previous <a href="../web-scraping/web-scraping.html">post</a> and clean it a litle bit:
+                            </p>
+                            <pre><code class="language-py">
+character_df = pd.read_csv("characters.csv")
+character_df['character'] = character_df['character'].apply(lambda x: re.sub("[\(].*?[\)]", "", x)) 
+character_df['character_firstname'] = character_df['character'].apply(lambda x: x.split(' ', 1)[0])
+pd.set_option('display.max_rows', None)
+character_df
+
+                            </code></pre>
+                            <p>
+                                Then, we need to extract the realtionships. Relationship detection can be a very complicated topic. But, here we will take a simple aproach. If to charachters apear with less than two sentences of distance, we will say they are connected.
+                            </p>
+                            <pre><code class="language-py">
+sent_entity_df = []
+
+# Loop through sentences, store named entity list for each sentence
+for sent in book_doc.sents:
+    entity_list = [ent.text for ent in sent.ents]
+    sent_entity_df.append({"sentence": sent, "entities": entity_list})
+    
+sent_entity_df = pd.DataFrame(sent_entity_df)
+
+def filter_entity(ent_list, character_df):
+    return [ent for ent in ent_list 
+            if ent in list(character_df.character) 
+            or ent in list(character_df.character_firstname)]
+    
+sent_entity_df['character_entities'] = sent_entity_df['entities'].apply(lambda x: filter_entity(x, character_df))
+
+# Filter out sentences that don't have any character
+sent_entity_df_filtered = sent_entity_df[sent_entity_df['character_entities'].map(len) > 0]
+
+# Take only first name of characters
+sent_entity_df_filtered['character_entities'] = sent_entity_df_filtered['character_entities'].apply(lambda x: [item.split()[0] for item in x])
+                                                                                                               
+window_size = 5
+relationships = []
+
+for i in range(sent_entity_df_filtered.index[-1]):
+    end_i = min(i+5, sent_entity_df_filtered.index[-1])
+    char_list = sum((sent_entity_df_filtered.loc[i: end_i].character_entities), [])
+    
+    # Remove duplicated characters that are next to each other
+    char_unique = [char_list[i] for i in range(len(char_list)) 
+                   if (i==0) or char_list[i] != char_list[i-1]]
+    
+    if len(char_unique) > 1:
+        for idx, a in enumerate(char_unique[:-1]):
+            b = char_unique[idx + 1]
+            relationships.append({"source": a, "target": b})
+            
+relationship_df = pd.DataFrame(relationships)
+pd.set_option('display.max_rows', None)
+relationship_df
+                            </code></pre>
+                            <p>
+                                With this, we successfully finished extracting the relationships of the characters. Make sure to read the <a href="../interactive-network/interactive-network.html">last part</a> of the series where we will construct an interactive social network from the relationships we extracted here.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../interactive-network/interactive-network.html">Coding an Interactive Social Network.</a></li>
+                                <li><a href="../game-of-life/game-of-life.html">Interactive Conway Game of Life.</a></li>
+                                <li><a href="../time-line/time-line.html">Interactive Timelines with Timeline.js.</a></li>
+                                <li><a href="../interactive-particles/interactive-particles.html">Coding an Interactive Particle Simulation.</a></li>
+                                <li><a href="../matrix-product/matrix-product.html">Optimizing Matrix-Matrix product.</a></li>
+                                <li><a href="../web-scraping/web-scraping.html">Web Scraping: Witcher Wiki.</a> </li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">NLP</a></li>
+                                <li><a href="#">Data Minig</a></li>
+                                <li><a href="#">Data Analysis</a></li>
+                                <li><a href="#">Python</a></li>
+                                <li><a href="#">Programing</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <!-- code sintax highlight -->
+    <script src="../../js/prism.js"></script>
+</body>
+
+</html>

@@ -1759,6 +1759,22 @@ div.owl-controls,
     background-image: url(../img/latest-news/news-bg-6.jpg);
 }
 
+.news-bg-7 {
+    background-image: url(../img/latest-news/news-bg-7.jpg);
+}
+
+.news-bg-8 {
+    background-image: url(../img/latest-news/news-bg-8.jpg);
+}
+
+.news-bg-9 {
+    background-image: url(../img/latest-news/news-bg-9.jpg);
+}
+
+.news-bg-10 {
+    background-image: url(../img/latest-news/news-bg-10.jpg);
+}
+
 .latest-news-bg {
     height: 200px;
     background-size: cover;

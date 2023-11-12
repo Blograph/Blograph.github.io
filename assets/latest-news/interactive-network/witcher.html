@@ -1,0 +1,349 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script>function neighbourhoodHighlight(params) {
+  // console.log("in nieghbourhoodhighlight");
+  allNodes = nodes.get({ returnType: "Object" });
+  // originalNodes = JSON.parse(JSON.stringify(allNodes));
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    highlightActive = true;
+    var i, j;
+    var selectedNode = params.nodes[0];
+    var degrees = 2;
+
+    // mark all nodes as hard to read.
+    for (let nodeId in allNodes) {
+      // nodeColors[nodeId] = allNodes[nodeId].color;
+      allNodes[nodeId].color = "rgba(200,200,200,0.5)";
+      if (allNodes[nodeId].hiddenLabel === undefined) {
+        allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+    var connectedNodes = network.getConnectedNodes(selectedNode);
+    var allConnectedNodes = [];
+
+    // get the second degree nodes
+    for (i = 1; i < degrees; i++) {
+      for (j = 0; j < connectedNodes.length; j++) {
+        allConnectedNodes = allConnectedNodes.concat(
+          network.getConnectedNodes(connectedNodes[j])
+        );
+      }
+    }
+
+    // all second degree nodes get a different color and their label back
+    for (i = 0; i < allConnectedNodes.length; i++) {
+      // allNodes[allConnectedNodes[i]].color = "pink";
+      allNodes[allConnectedNodes[i]].color = "rgba(150,150,150,0.75)";
+      if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[allConnectedNodes[i]].label =
+          allNodes[allConnectedNodes[i]].hiddenLabel;
+        allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // all first degree nodes get their own color and their label back
+    for (i = 0; i < connectedNodes.length; i++) {
+      // allNodes[connectedNodes[i]].color = undefined;
+      allNodes[connectedNodes[i]].color = nodeColors[connectedNodes[i]];
+      if (allNodes[connectedNodes[i]].hiddenLabel !== undefined) {
+        allNodes[connectedNodes[i]].label =
+          allNodes[connectedNodes[i]].hiddenLabel;
+        allNodes[connectedNodes[i]].hiddenLabel = undefined;
+      }
+    }
+
+    // the main node gets its own color and its label back.
+    // allNodes[selectedNode].color = undefined;
+    allNodes[selectedNode].color = nodeColors[selectedNode];
+    if (allNodes[selectedNode].hiddenLabel !== undefined) {
+      allNodes[selectedNode].label = allNodes[selectedNode].hiddenLabel;
+      allNodes[selectedNode].hiddenLabel = undefined;
+    }
+  } else if (highlightActive === true) {
+    // console.log("highlightActive was true");
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      // allNodes[nodeId].color = "purple";
+      allNodes[nodeId].color = nodeColors[nodeId];
+      // delete allNodes[nodeId].color;
+      if (allNodes[nodeId].hiddenLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
+        allNodes[nodeId].hiddenLabel = undefined;
+      }
+    }
+    highlightActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    // console.log("Nothing was selected");
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        // console.log(allNodes[nodeId]);
+        // allNodes[nodeId].color = {};
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function filterHighlight(params) {
+  allNodes = nodes.get({ returnType: "Object" });
+  // if something is selected:
+  if (params.nodes.length > 0) {
+    filterActive = true;
+    let selectedNodes = params.nodes;
+
+    // hiding all nodes and saving the label
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = true;
+      if (allNodes[nodeId].savedLabel === undefined) {
+        allNodes[nodeId].savedLabel = allNodes[nodeId].label;
+        allNodes[nodeId].label = undefined;
+      }
+    }
+
+    for (let i=0; i < selectedNodes.length; i++) {
+      allNodes[selectedNodes[i]].hidden = false;
+      if (allNodes[selectedNodes[i]].savedLabel !== undefined) {
+        allNodes[selectedNodes[i]].label = allNodes[selectedNodes[i]].savedLabel;
+        allNodes[selectedNodes[i]].savedLabel = undefined;
+      }
+    }
+
+  } else if (filterActive === true) {
+    // reset all nodes
+    for (let nodeId in allNodes) {
+      allNodes[nodeId].hidden = false;
+      if (allNodes[nodeId].savedLabel !== undefined) {
+        allNodes[nodeId].label = allNodes[nodeId].savedLabel;
+        allNodes[nodeId].savedLabel = undefined;
+      }
+    }
+    filterActive = false;
+  }
+
+  // transform the object into an array
+  var updateArray = [];
+  if (params.nodes.length > 0) {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  } else {
+    for (let nodeId in allNodes) {
+      if (allNodes.hasOwnProperty(nodeId)) {
+        updateArray.push(allNodes[nodeId]);
+      }
+    }
+    nodes.update(updateArray);
+  }
+}
+
+function selectNode(nodes) {
+  network.selectNodes(nodes);
+  neighbourhoodHighlight({ nodes: nodes });
+  return nodes;
+}
+
+function selectNodes(nodes) {
+  network.selectNodes(nodes);
+  filterHighlight({nodes: nodes});
+  return nodes;
+}
+
+function highlightFilter(filter) {
+  let selectedNodes = []
+  let selectedProp = filter['property']
+  if (filter['item'] === 'node') {
+    let allNodes = nodes.get({ returnType: "Object" });
+    for (let nodeId in allNodes) {
+      if (allNodes[nodeId][selectedProp] && filter['value'].includes((allNodes[nodeId][selectedProp]).toString())) {
+        selectedNodes.push(nodeId)
+      }
+    }
+  }
+  else if (filter['item'] === 'edge'){
+    let allEdges = edges.get({returnType: 'object'});
+    // check if the selected property exists for selected edge and select the nodes connected to the edge
+    for (let edge in allEdges) {
+      if (allEdges[edge][selectedProp] && filter['value'].includes((allEdges[edge][selectedProp]).toString())) {
+        selectedNodes.push(allEdges[edge]['from'])
+        selectedNodes.push(allEdges[edge]['to'])
+      }
+    }
+  }
+  selectNodes(selectedNodes)
+}</script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            
+            
+            
+            
+            
+
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 560px;
+                 background-color: #2d2d2d;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"font": {"color": "white"}, "group": 0, "id": "Velerad", "label": "Velerad", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 7, "id": "Geralt", "label": "Geralt", "shape": "dot", "size": 70}, {"font": {"color": "white"}, "group": 0, "id": "Ostrit", "label": "Ostrit", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 0, "id": "Segelin", "label": "Segelin", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 0, "id": "Foltest", "label": "Foltest", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 0, "id": "Adda", "label": "Adda", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 7, "id": "Nenneke", "label": "Nenneke", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 6, "id": "Roach", "label": "Roach", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 3, "id": "Two", "label": "Two", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "group": 3, "id": "Rulle", "label": "Rulle", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 6, "id": "Nivellen", "label": "Nivellen", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "group": 6, "id": "Fenne", "label": "Fenne", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 6, "id": "Primula", "label": "Primula", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 6, "id": "Vereena", "label": "Vereena", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 7, "id": "Falwick", "label": "Falwick", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 7, "id": "Hereward", "label": "Hereward", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 2, "id": "Caldemeyn", "label": "Caldemeyn", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 2, "id": "Irion", "label": "Irion", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 2, "id": "Stregobor", "label": "Stregobor", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 7, "id": "Zavist", "label": "Zavist", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 2, "id": "Eltibald", "label": "Eltibald", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 2, "id": "Aridea", "label": "Aridea", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 2, "id": "Fredefalk", "label": "Fredefalk", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 2, "id": "Nohorn", "label": "Nohorn", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 2, "id": "Tavik", "label": "Tavik", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 2, "id": "Civril", "label": "Civril", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 2, "id": "Fifteen", "label": "Fifteen", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 2, "id": "Renfri", "label": "Renfri", "shape": "dot", "size": 11}, {"font": {"color": "white"}, "group": 7, "id": "Libushe", "label": "Libushe", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 2, "id": "Marilka", "label": "Marilka", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 2, "id": "Audoen", "label": "Audoen", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 3, "id": "Nimir", "label": "Nimir", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 7, "id": "Adam", "label": "Adam", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 4, "id": "Haxo", "label": "Haxo", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 4, "id": "Roegner", "label": "Roegner", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 4, "id": "Drogodar", "label": "Drogodar", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 7, "id": "Vridank", "label": "Vridank", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 4, "id": "Draig", "label": "Draig", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 4, "id": "Eist", "label": "Eist", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "group": 4, "id": "Mousesack", "label": "Mousesack", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 4, "id": "Pavetta", "label": "Pavetta", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "group": 4, "id": "Crach", "label": "Crach", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 4, "id": "Vissegerd", "label": "Vissegerd", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "group": 4, "id": "Ravix", "label": "Ravix", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 4, "id": "Fodcat", "label": "Fodcat", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 7, "id": "Adalia", "label": "Adalia", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 4, "id": "Rainfarn", "label": "Rainfarn", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 7, "id": "Roderick", "label": "Roderick", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 7, "id": "Millet", "label": "Millet", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 7, "id": "Nan", "label": "Nan", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 8, "id": "Dhun", "label": "Dhun", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 8, "id": "Lille", "label": "Lille", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 8, "id": "Galarr", "label": "Galarr", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 8, "id": "Torque", "label": "Torque", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "group": 8, "id": "Vanadain", "label": "Vanadain", "shape": "dot", "size": 4}, {"font": {"color": "white"}, "group": 8, "id": "Toruviel", "label": "Toruviel", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 8, "id": "Filavandrel", "label": "Filavandrel", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 10, "id": "Yennefer", "label": "Yennefer", "shape": "dot", "size": 12}, {"font": {"color": "white"}, "group": 10, "id": "Vratimir", "label": "Vratimir", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 10, "id": "Chireadan", "label": "Chireadan", "shape": "dot", "size": 8}, {"font": {"color": "white"}, "group": 10, "id": "Errdil", "label": "Errdil", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "group": 10, "id": "Beau", "label": "Beau", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 7, "id": "Cerberus", "label": "Cerberus", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 3, "id": "Valdo", "label": "Valdo", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 10, "id": "Laurelnose", "label": "Laurelnose", "shape": "dot", "size": 5}, {"font": {"color": "white"}, "group": 10, "id": "Krepp", "label": "Krepp", "shape": "dot", "size": 7}, {"font": {"color": "white"}, "group": 10, "id": "Geoffrey", "label": "Geoffrey", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 10, "id": "Neville", "label": "Neville", "shape": "dot", "size": 6}, {"font": {"color": "white"}, "group": 10, "id": "Eskel", "label": "Eskel", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 7, "id": "Count", "label": "Count", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 7, "id": "Dennis", "label": "Dennis", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 7, "id": "Iola", "label": "Iola", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 8, "id": "Til", "label": "Til", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 3, "id": "Virginia", "label": "Virginia", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 6, "id": "Glutton", "label": "Glutton", "shape": "dot", "size": 3}, {"font": {"color": "white"}, "group": 3, "id": "Vyr", "label": "Vyr", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 6, "id": "Venimira", "label": "Venimira", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 6, "id": "Ilka", "label": "Ilka", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 7, "id": "Ermellia", "label": "Ermellia", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 9, "id": "Dragomir", "label": "Dragomir", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 9, "id": "Trigla", "label": "Trigla", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 2, "id": "Borg", "label": "Borg", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 2, "id": "Karelka", "label": "Karelka", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 1, "id": "Silvena", "label": "Silvena", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 1, "id": "Fialka", "label": "Fialka", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 1, "id": "Evermir", "label": "Evermir", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 1, "id": "Abrad", "label": "Abrad", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 4, "id": "Eylembert", "label": "Eylembert", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 4, "id": "Akerspaark", "label": "Akerspaark", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 4, "id": "Windhalm", "label": "Windhalm", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 4, "id": "Wieldhill", "label": "Wieldhill", "shape": "dot", "size": 2}, {"font": {"color": "white"}, "group": 7, "id": "Cerro", "label": "Cerro", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 5, "id": "Zatret", "label": "Zatret", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 5, "id": "Rumplestelt", "label": "Rumplestelt", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 8, "id": "Nettly", "label": "Nettly", "shape": "dot", "size": 1}, {"font": {"color": "white"}, "group": 10, "id": "Vesemir", "label": "Vesemir", "shape": "dot", "size": 2}]);
+                  edges = new vis.DataSet([{"from": "Velerad", "to": "Geralt", "width": 1}, {"from": "Velerad", "to": "Ostrit", "width": 1}, {"from": "Velerad", "to": "Segelin", "width": 1}, {"from": "Velerad", "to": "Foltest", "width": 1}, {"from": "Geralt", "to": "Foltest", "width": 1}, {"from": "Geralt", "to": "Ostrit", "width": 1}, {"from": "Geralt", "to": "Adda", "width": 1}, {"from": "Geralt", "to": "Nenneke", "width": 1}, {"from": "Geralt", "to": "Roach", "width": 1}, {"from": "Geralt", "to": "Two", "width": 1}, {"from": "Geralt", "to": "Rulle", "width": 1}, {"from": "Geralt", "to": "Nivellen", "width": 1}, {"from": "Geralt", "to": "Fenne", "width": 1}, {"from": "Geralt", "to": "Primula", "width": 1}, {"from": "Geralt", "to": "Vereena", "width": 1}, {"from": "Geralt", "to": "Falwick", "width": 1}, {"from": "Geralt", "to": "Hereward", "width": 1}, {"from": "Geralt", "to": "Caldemeyn", "width": 1}, {"from": "Geralt", "to": "Irion", "width": 1}, {"from": "Geralt", "to": "Stregobor", "width": 1}, {"from": "Geralt", "to": "Zavist", "width": 1}, {"from": "Geralt", "to": "Eltibald", "width": 1}, {"from": "Geralt", "to": "Aridea", "width": 1}, {"from": "Geralt", "to": "Fredefalk", "width": 1}, {"from": "Geralt", "to": "Nohorn", "width": 1}, {"from": "Geralt", "to": "Tavik", "width": 1}, {"from": "Geralt", "to": "Civril", "width": 1}, {"from": "Geralt", "to": "Fifteen", "width": 1}, {"from": "Geralt", "to": "Renfri", "width": 1}, {"from": "Geralt", "to": "Libushe", "width": 1}, {"from": "Geralt", "to": "Marilka", "width": 1}, {"from": "Geralt", "to": "Audoen", "width": 1}, {"from": "Geralt", "to": "Nimir", "width": 1}, {"from": "Geralt", "to": "Adam", "width": 1}, {"from": "Geralt", "to": "Haxo", "width": 1}, {"from": "Geralt", "to": "Roegner", "width": 1}, {"from": "Geralt", "to": "Drogodar", "width": 1}, {"from": "Geralt", "to": "Vridank", "width": 1}, {"from": "Geralt", "to": "Draig", "width": 1}, {"from": "Geralt", "to": "Eist", "width": 1}, {"from": "Geralt", "to": "Mousesack", "width": 1}, {"from": "Geralt", "to": "Pavetta", "width": 1}, {"from": "Geralt", "to": "Crach", "width": 1}, {"from": "Geralt", "to": "Vissegerd", "width": 1}, {"from": "Geralt", "to": "Ravix", "width": 1}, {"from": "Geralt", "to": "Fodcat", "width": 1}, {"from": "Geralt", "to": "Adalia", "width": 1}, {"from": "Geralt", "to": "Rainfarn", "width": 1}, {"from": "Geralt", "to": "Roderick", "width": 1}, {"from": "Geralt", "to": "Millet", "width": 1}, {"from": "Geralt", "to": "Nan", "width": 1}, {"from": "Geralt", "to": "Dhun", "width": 1}, {"from": "Geralt", "to": "Lille", "width": 1}, {"from": "Geralt", "to": "Galarr", "width": 1}, {"from": "Geralt", "to": "Torque", "width": 1}, {"from": "Geralt", "to": "Vanadain", "width": 1}, {"from": "Geralt", "to": "Toruviel", "width": 1}, {"from": "Geralt", "to": "Filavandrel", "width": 1}, {"from": "Geralt", "to": "Yennefer", "width": 1}, {"from": "Geralt", "to": "Vratimir", "width": 1}, {"from": "Geralt", "to": "Chireadan", "width": 1}, {"from": "Geralt", "to": "Errdil", "width": 1}, {"from": "Geralt", "to": "Beau", "width": 1}, {"from": "Geralt", "to": "Cerberus", "width": 1}, {"from": "Geralt", "to": "Valdo", "width": 1}, {"from": "Geralt", "to": "Laurelnose", "width": 1}, {"from": "Geralt", "to": "Krepp", "width": 1}, {"from": "Geralt", "to": "Geoffrey", "width": 1}, {"from": "Geralt", "to": "Neville", "width": 1}, {"from": "Geralt", "to": "Eskel", "width": 1}, {"from": "Geralt", "to": "Count", "width": 1}, {"from": "Geralt", "to": "Dennis", "width": 1}, {"from": "Geralt", "to": "Iola", "width": 1}, {"from": "Ostrit", "to": "Adda", "width": 1}, {"from": "Ostrit", "to": "Segelin", "width": 1}, {"from": "Ostrit", "to": "Foltest", "width": 1}, {"from": "Adda", "to": "Segelin", "width": 1}, {"from": "Adda", "to": "Foltest", "width": 1}, {"from": "Nenneke", "to": "Yennefer", "width": 1}, {"from": "Nenneke", "to": "Hereward", "width": 1}, {"from": "Nenneke", "to": "Falwick", "width": 1}, {"from": "Nenneke", "to": "Two", "width": 1}, {"from": "Nenneke", "to": "Iola", "width": 1}, {"from": "Yennefer", "to": "Til", "width": 1}, {"from": "Yennefer", "to": "Chireadan", "width": 1}, {"from": "Yennefer", "to": "Two", "width": 1}, {"from": "Yennefer", "to": "Vratimir", "width": 1}, {"from": "Yennefer", "to": "Virginia", "width": 1}, {"from": "Yennefer", "to": "Beau", "width": 1}, {"from": "Yennefer", "to": "Laurelnose", "width": 1}, {"from": "Yennefer", "to": "Krepp", "width": 1}, {"from": "Yennefer", "to": "Neville", "width": 1}, {"from": "Yennefer", "to": "Errdil", "width": 1}, {"from": "Roach", "to": "Nivellen", "width": 1}, {"from": "Roach", "to": "Glutton", "width": 1}, {"from": "Two", "to": "Rulle", "width": 1}, {"from": "Two", "to": "Vyr", "width": 1}, {"from": "Two", "to": "Drogodar", "width": 1}, {"from": "Two", "to": "Virginia", "width": 1}, {"from": "Two", "to": "Valdo", "width": 1}, {"from": "Nivellen", "to": "Glutton", "width": 1}, {"from": "Nivellen", "to": "Fenne", "width": 1}, {"from": "Nivellen", "to": "Primula", "width": 1}, {"from": "Nivellen", "to": "Venimira", "width": 1}, {"from": "Nivellen", "to": "Vereena", "width": 1}, {"from": "Glutton", "to": "Vereena", "width": 1}, {"from": "Primula", "to": "Ilka", "width": 1}, {"from": "Ilka", "to": "Venimira", "width": 1}, {"from": "Falwick", "to": "Hereward", "width": 1}, {"from": "Falwick", "to": "Dennis", "width": 1}, {"from": "Hereward", "to": "Ermellia", "width": 1}, {"from": "Dragomir", "to": "Trigla", "width": 1}, {"from": "Caldemeyn", "to": "Borg", "width": 1}, {"from": "Caldemeyn", "to": "Irion", "width": 1}, {"from": "Caldemeyn", "to": "Renfri", "width": 1}, {"from": "Caldemeyn", "to": "Audoen", "width": 1}, {"from": "Karelka", "to": "Borg", "width": 1}, {"from": "Stregobor", "to": "Fredefalk", "width": 1}, {"from": "Stregobor", "to": "Eltibald", "width": 1}, {"from": "Stregobor", "to": "Renfri", "width": 1}, {"from": "Stregobor", "to": "Audoen", "width": 1}, {"from": "Stregobor", "to": "Aridea", "width": 1}, {"from": "Silvena", "to": "Fialka", "width": 1}, {"from": "Fialka", "to": "Evermir", "width": 1}, {"from": "Evermir", "to": "Abrad", "width": 1}, {"from": "Fredefalk", "to": "Aridea", "width": 1}, {"from": "Fredefalk", "to": "Renfri", "width": 1}, {"from": "Aridea", "to": "Renfri", "width": 1}, {"from": "Renfri", "to": "Nohorn", "width": 1}, {"from": "Renfri", "to": "Civril", "width": 1}, {"from": "Renfri", "to": "Tavik", "width": 1}, {"from": "Renfri", "to": "Audoen", "width": 1}, {"from": "Renfri", "to": "Marilka", "width": 1}, {"from": "Renfri", "to": "Fifteen", "width": 1}, {"from": "Vyr", "to": "Nimir", "width": 1}, {"from": "Nimir", "to": "Fifteen", "width": 1}, {"from": "Nohorn", "to": "Tavik", "width": 1}, {"from": "Nohorn", "to": "Fifteen", "width": 1}, {"from": "Nohorn", "to": "Civril", "width": 1}, {"from": "Tavik", "to": "Fifteen", "width": 1}, {"from": "Tavik", "to": "Civril", "width": 1}, {"from": "Fifteen", "to": "Civril", "width": 1}, {"from": "Civril", "to": "Marilka", "width": 1}, {"from": "Haxo", "to": "Eylembert", "width": 1}, {"from": "Roegner", "to": "Pavetta", "width": 1}, {"from": "Roegner", "to": "Crach", "width": 1}, {"from": "Roegner", "to": "Akerspaark", "width": 1}, {"from": "Drogodar", "to": "Eylembert", "width": 1}, {"from": "Drogodar", "to": "Eist", "width": 1}, {"from": "Drogodar", "to": "Fodcat", "width": 1}, {"from": "Drogodar", "to": "Vissegerd", "width": 1}, {"from": "Pavetta", "to": "Eist", "width": 1}, {"from": "Pavetta", "to": "Vissegerd", "width": 1}, {"from": "Pavetta", "to": "Mousesack", "width": 1}, {"from": "Pavetta", "to": "Windhalm", "width": 1}, {"from": "Pavetta", "to": "Rainfarn", "width": 1}, {"from": "Pavetta", "to": "Crach", "width": 1}, {"from": "Eist", "to": "Crach", "width": 1}, {"from": "Eist", "to": "Draig", "width": 1}, {"from": "Eist", "to": "Vissegerd", "width": 1}, {"from": "Eist", "to": "Rainfarn", "width": 1}, {"from": "Eist", "to": "Mousesack", "width": 1}, {"from": "Crach", "to": "Draig", "width": 1}, {"from": "Draig", "to": "Vissegerd", "width": 1}, {"from": "Draig", "to": "Windhalm", "width": 1}, {"from": "Draig", "to": "Rainfarn", "width": 1}, {"from": "Fodcat", "to": "Wieldhill", "width": 1}, {"from": "Wieldhill", "to": "Vissegerd", "width": 1}, {"from": "Vissegerd", "to": "Mousesack", "width": 1}, {"from": "Vridank", "to": "Cerro", "width": 1}, {"from": "Mousesack", "to": "Rainfarn", "width": 1}, {"from": "Zatret", "to": "Rumplestelt", "width": 1}, {"from": "Ravix", "to": "Rainfarn", "width": 1}, {"from": "Dhun", "to": "Nettly", "width": 1}, {"from": "Dhun", "to": "Lille", "width": 1}, {"from": "Lille", "to": "Filavandrel", "width": 1}, {"from": "Lille", "to": "Torque", "width": 1}, {"from": "Galarr", "to": "Torque", "width": 1}, {"from": "Galarr", "to": "Vanadain", "width": 1}, {"from": "Galarr", "to": "Toruviel", "width": 1}, {"from": "Galarr", "to": "Filavandrel", "width": 1}, {"from": "Torque", "to": "Toruviel", "width": 1}, {"from": "Torque", "to": "Vanadain", "width": 1}, {"from": "Torque", "to": "Filavandrel", "width": 1}, {"from": "Torque", "to": "Til", "width": 1}, {"from": "Vanadain", "to": "Toruviel", "width": 1}, {"from": "Toruviel", "to": "Filavandrel", "width": 1}, {"from": "Valdo", "to": "Virginia", "width": 1}, {"from": "Chireadan", "to": "Vratimir", "width": 1}, {"from": "Chireadan", "to": "Errdil", "width": 1}, {"from": "Chireadan", "to": "Beau", "width": 1}, {"from": "Chireadan", "to": "Laurelnose", "width": 1}, {"from": "Chireadan", "to": "Neville", "width": 1}, {"from": "Chireadan", "to": "Krepp", "width": 1}, {"from": "Vratimir", "to": "Errdil", "width": 1}, {"from": "Vratimir", "to": "Laurelnose", "width": 1}, {"from": "Vratimir", "to": "Krepp", "width": 1}, {"from": "Errdil", "to": "Vesemir", "width": 1}, {"from": "Errdil", "to": "Neville", "width": 1}, {"from": "Errdil", "to": "Krepp", "width": 1}, {"from": "Laurelnose", "to": "Neville", "width": 1}, {"from": "Krepp", "to": "Neville", "width": 1}, {"from": "Krepp", "to": "Geoffrey", "width": 1}, {"from": "Eskel", "to": "Vesemir", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

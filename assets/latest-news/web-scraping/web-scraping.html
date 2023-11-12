@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Web Scraping: Witcher Wiki</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Web Scraping: Witcher Wiki</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <img src="/assets/img/latest-news/news-bg-6.jpg" class="img-fluid">
+                        <div class="single-article-text">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Carlos Andrés del Valle</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 31 October, 2023</span>
+                            </p>
+                            <h2>Web Scraping: Witcher Wiki</h2>
+                            <p>
+                                In this post, we will explore the basics of web scraping. Web scraping is the process of extracting data from websites, typically in an automated fashion, using a program or script. It involves sending HTTP requests to a website, retrieving the HTML content, and then parsing that content to extract the desired information. Web scraping can be a powerful tool for gathering data from the internet, enabling users to collect and analyze information that may not be readily available through other means. Web Scraping is useful for a variety of tasks, such as data mining, market research, content aggregation, and more. Web scraping is particularly valuable for projects that require large amounts of data, such as creating datasets for machine learning, conducting sentiment analysis, or, as in our case, compiling a list of characters from the Witcher book series. Specifically, in this tutorial, we will use web scraping to extract a list of characters from the Witcher wiki. This data extraction will serve as the first part of a three-part series on social network analysis. By obtaining a comprehensive list of characters, we can later explore relationships, connections, and interactions between these characters in the context of social networks within the Witcher universe.
+                            </p>
+                            <p>
+                                A crucial reminder when engaging in web scraping activities is to respect the terms of use of the targeted website. Always ensure that the website permits web scraping, and be aware of any restrictions outlined in the website's "robots.txt" file. The "robots.txt" file provides guidelines for web crawlers and can indicate whether certain parts of the website are off-limits for scraping. Ignoring these guidelines may lead to legal issues or the blocking of your IP address, so it's essential to be mindful of ethical considerations and adhere to the rules set by the website.
+                            </p>
+                            <p>
+                                To start, load all the necesary modules.
+                            </p>
+                            <pre><code class="language-py">
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+import os
+import logging
+import pandas as pd
+                            </code></pre>
+                            <p>
+                                Now, let's configure our web crawler.
+                            </p>
+                            <pre><code class="language-py">
+## Setup chrome options
+chrome_options = Options()
+chrome_options.add_argument("--headless") # Ensure GUI is off
+chrome_options.add_argument("--no-sandbox")
+
+# Silent download of drivers
+logging.getLogger('WDM').setLevel(logging.NOTSET)
+os.environ['WDM_LOG'] = 'False'
+
+# Create service
+webdriver_service = Service(ChromeDriverManager().install())
+
+# Create driver
+driver = webdriver.Chrome(service = webdriver_service, options = chrome_options)
+                            </code></pre>
+                            <p>
+                                Now, we have to connect to the website.
+                            </p>
+                            <pre><code class="language-py">
+page_url = "https://witcher.fandom.com/wiki/Category:Characters_in_the_stories"
+driver.get(page_url)
+                            </code></pre>
+                            <p>
+                                Once the connection is established, we are almost done. We have to crawl though the website and gather the characters from each one of the books.
+                            </p>
+                            <pre><code class="language-py">
+book_categories = driver.find_elements(by=By.CLASS_NAME, value='category-page__member-link')
+
+books = []
+for category in book_categories:
+    book_url = category.get_attribute('href')
+    book_name = category.text
+    books.append({'book_name': book_name, "url": book_url})
+    
+character_list = []
+
+for book in books:
+    # go to book page
+    driver.get(book['url'])
+    
+    character_elems = driver.find_elements(by=By.CLASS_NAME, value = 'category-page__member-link')
+    
+    for elem in character_elems:
+        character_list.append({'book': book['book_name'],'character': elem.text})
+                            </code></pre>
+                            <p>
+                                The last thing to do is to save our new data.
+                            </p>
+                            <pre><code class="language-py">
+character_df = pd.DataFrame(character_list)
+print(character_df)
+character_df.to_csv('characters.csv')
+                            </code></pre>
+                            <p>
+                                We should see something like this:
+                            </p>
+                            <pre><code class="language-py">
+                                      book               character
+0      Category:Baptism of Fire characters                  Adalia
+1      Category:Baptism of Fire characters                   Adela
+2      Category:Baptism of Fire characters           Aen Saevherne
+3      Category:Baptism of Fire characters                Aevenien
+4      Category:Baptism of Fire characters                  Aglaïs
+...                                    ...                     ...
+1271  Category:Time of Contempt characters        Yanna of Murivel
+1272  Category:Time of Contempt characters           Yarpen Zigrin
+1273  Category:Time of Contempt characters  Yennefer of Vengerberg
+1274  Category:Time of Contempt characters         Yiolenta Suarez
+1275  Category:Time of Contempt characters                   Zyvik
+                            </code></pre>
+                            <p>
+                                With this, we finished the web scraping. Make sure to checkout the next part: <a href="../extracting-characters/extracting-characters.html">Extracting Character Connections from a Book.</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../interactive-network/interactive-network.html">Coding an Interactive Social Network.</a></li>
+                                <li><a href="../game-of-life/game-of-life.html">Interactive Conway Game of Life.</a></li>
+                                <li><a href="../time-line/time-line.html">Interactive Timelines with Timeline.js.</a></li>
+                                <li><a href="../interactive-particles/interactive-particles.html">Coding an Interactive Particle Simulation.</a></li>
+                                <li><a href="../matrix-product/matrix-product.html">Optimizing Matrix-Matrix product.</a></li>
+                                <li><a href="../extracting-characters/extracting-characters.html">Extracting Character Connections from a Book.</a></li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">Web Scraping</a></li>
+                                <li><a href="#">Data Minig</a></li>
+                                <li><a href="#">Data Analysis</a></li>
+                                <li><a href="#">Python</a></li>
+                                <li><a href="#">Programing</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <!-- code sintax highlight -->
+    <script src="../../js/prism.js"></script>
+</body>
+
+</html>

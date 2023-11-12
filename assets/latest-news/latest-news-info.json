@@ -1,9 +1,17 @@
 [
 {
+    "title": "Coding an Interactive Social Network",
+    "author": "Carlos",
+    "date": "2023-11-25",
+    "excerpt": "In the concluding part of our interactive social network series, we utilize web-scraped character data and insights from natural language processing to construct a dynamic social network within the Witcher Universe using Pyvis.",
+    "link": "assets/latest-news/interactive-network/interactive-network.html",
+    "image": "news-bg-1"
+},
+{
     "title": "Interactive Conway Game of Life",
     "author": "Carlos",
     "date": "2023-11-15",
-    "excerpt": "Dive into the past with flair! Unleash the power of Timeline.js to craft immersive, interactive timelines that transform history into a captivating digital narrative. Join us as we explore the art of dynamic storytelling and bring the past to life in just a scroll.",
+    "excerpt": "Explore Conway's Game of Life in this tutorial. Using JavaScript and mouse-controlled grid coloring, learn to implement an Interactive version of  Conway's Game of Life, a captivating cellular automaton exhibiting complex behavior.",
     "link": "assets/latest-news/game-of-life/game-of-life.html",
     "image": "news-bg-5"
 },
@@ -32,10 +40,18 @@
     "image": "news-bg-2"
 },
 {
-    "title": "Análisis de aperturas en ajedrez",
-    "author": "Carlos y Daniel",
-    "date": "2023-10-20",
-    "excerpt": "Bongcloud > Defensa siciliana",
-    "link": "assets/latest-news/Example/single-news.html",
-    "image": "news-bg-1"
+    "title": "Extracting Character Connections from a Book",
+    "author": "Carlos",
+    "date": "2023-11-1",
+    "excerpt": "In the second part of our social network analysis series, we employ natural language processing (NLP) to unveil character connections within the text of the first Witcher book. ",
+    "link": "assets/latest-news/extracting-characters/extracting-characters.html",
+    "image": "news-bg-7"
+},
+{
+    "title": "Web Scraping: Witcher Wiki",
+    "author": "Carlos",
+    "date": "2023-10-31",
+    "excerpt": "Explore the fundamentals of web scraping, a technique for automated data extraction from websites. Demonstrated through extracting character data from the Witcher Wiki, it serves as the initial installment in a three-part series on social network analysis.",
+    "link": "assets/latest-news/web-scraping/web-scraping.html",
+    "image": "news-bg-6"
 }]

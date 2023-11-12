@@ -29,6 +29,22 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <!-- responsive -->
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <style>
+    canvas {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .breadcrumb-text {
+        text-align: center;
+        margin: 0 auto;
+    }
+    </style>
 </head>
 
 <body>
@@ -37,12 +53,11 @@
     <!-- breadcrumb-section -->
     <div class="breadcrumb-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div class="breadcrumb-text">
-                        <p>The Visual Blograph</p>
-                        <h1>Latest Posts</h1>
-                    </div>
+            <div class="row text-center">
+                <div class="breadcrumb-text text-center">
+                    <canvas id="c"></canvas>
+                    <p>The Visual Blograph</p>
+                    <h1>Latest Posts</h1>
                 </div>
             </div>
         </div>
@@ -97,6 +112,8 @@
     <script src="assets/js/load_sections.js"></script>
     <!-- load all posts js -->
     <script src="assets/js/load_posts.js"></script>
+    <!-- update latest posts js -->
+    <script src="assets/js/fluid.js"></script>
 </body>
 
 </html>

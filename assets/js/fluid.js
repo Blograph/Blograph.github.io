@@ -17,6 +17,7 @@
     var speck_count = 4500; //This determines how many particles will be made.
     var vec_cells = []; //The array that will contain the grid cells
     var particles = []; //The array that will contain the particles
+    mouse.down = true;
     function init() {
         canvas = document.getElementById("c");
         ctx = canvas.getContext("2d");
@@ -220,7 +221,7 @@
     }
 
     function mouse_up_handler() {
-        mouse.down = false;
+        mouse.down = true;
     }
 
     function touch_start_handler(e) {
@@ -262,5 +263,4 @@
 }(window));
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-
 Fluid.initialize();

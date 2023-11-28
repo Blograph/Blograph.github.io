@@ -54,4 +54,12 @@
     "excerpt": "Explore the fundamentals of web scraping, a technique for automated data extraction from websites. Demonstrated through extracting character data from the Witcher Wiki, it serves as the initial installment in a three-part series on social network analysis.",
     "link": "assets/latest-news/web-scraping/web-scraping.html",
     "image": "news-bg-6"
+},
+{
+    "title": "Virtualized Jupyter's backend",
+    "author": "Daniel",
+    "date": "2023-11-27",
+    "excerpt": "Use virtualized Jupyter's backend with metal frontend, with close to native responsiveness.",
+    "link": "assets/latest-news/jupyter-vm/jupyter-vm.html",
+    "image": "news-bg-8"
 }]

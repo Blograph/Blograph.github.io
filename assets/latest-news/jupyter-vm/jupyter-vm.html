@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Visual Blograph">
+    <!-- title -->
+    <title>Optimizing Matrix-Matrix product</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" type="../../image/png" href="../../img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="../../css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="../../css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="../../css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="../../css/responsive.css">
+    <!-- code sintax highlight -->
+    <link href="../../css/prism.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- header -->
+    <div id="header-placeholder"></div>
+    <!-- breadcrumb-section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <p>The Visual Blograph</p>
+                        <h1>Virtualized Jupyter's backend</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end breadcrumb section -->
+    <!-- single article section -->
+    <div class="mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="single-article-section">
+                        <div class="single-article-text">
+                            <img src="/assets/img/latest-news/JupyterVM.png" class="img-fluid" alt="Image description">
+                            <p class="blog-meta">
+                                <span class="author"><i class="fas fa-user"></i> <a href="/about.html">Daniel Alejandro García Hernández</a></span>
+                                <span class=" date"><i class="fas fa-calendar"></i> 27 November, 2023</span>
+                            </p>
+                            <h2>Virtualized Jupyter's backend.</h2>
+                            <p>
+                                Inspired by a mate, today we'll learn how to use Jupyter's frontend in our main operative system, while running the backend in a different, virtualized operative system.
+                            </p>
+                            <p>
+                                -"Why?", you may ask. This will allow users certain features that are not avaiable in their main operative system but work just fine in another, without the need of dual booting. One example is Windows's quirky behaviour with some LaTeX font rendering using matplotlib, that works just fine under Linux.
+                            </p>
+
+                            <p>
+                                For this tutorial, we'll need to have a virtualization-capable CPU (almost all modern CPUs have this), CPU virtualization enabled on BIOS and VirtualBox installed in your system. There are amazing resources in the internet to help you with this, so this tutorial assumes you already have these sorted out.
+                            </p>
+                            <p>
+                                This tutorial is divided in the following steps: First download, install and tweaking of a virtual machine (VM) in VirtualBox, then we'll see the installation process of Jupyter, and finally we'll enable FLATA by doing do some network configuration. Skip to the relevant parts as you may need.
+                            </p>
+
+                            <p>
+                                Let's start by downloading an Ubuntu server .iso installer from <a href="https://ubuntu.com/download/server" target="_blank">Ubuntu's webpage</a>. We will use Ubuntu server, as it is a lightweight yet begineer-friendly Linux distribution.
+                            </p>
+                            <p>
+                                The next step is to create an Ubuntu virtual machine in VirtualBox. We do this by clicking "New", setting "Expert mode" and following the next confiuguration steps. Since we won't use a Desktop Enviroment, 2 CPU cores and 2 GB of RAM is more than enough, but feel free to adjust this based on your hardware and computational needs.
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/VirtualBox.jpg" class="img-fluid" alt="VM virtual hardware"> <br /><br /><br />
+                            <p>
+                                After this, we'll do so tweaks to the virtual machine. This will allow for a better performing virtual machine with negible impact on our host computer.
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/Tweak.jpg" class="img-fluid" alt="VM tweaking"> <br /><br />
+                            <p>
+                                Next we'll install Ubuntu-server. To do this, start the virtual machine, and follow the steps that appear in the screen. These are mostly straightforward, but below are some of options you should choose on the critical steps:
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/Install.jpg" class="img-fluid" alt="Ubuntu server installation process"> <br /><br />
+
+                            <p>
+                                After the installation is done, start the VM and log in into your user. Congratulations, you just created the virtual machine!. Your VM should look something like this:
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/Ubuntu_postinstall.png" class="img-fluid" alt="Ubuntu VM"> <br /><br />
+
+                            <p>
+                                And it's done. It's a good practice to update your system after booting up for the first time. In Debian-based distros, like Ubuntu, we do this with the following commands:
+                            </p>
+                            <pre><code class="language-bash">$ sudo apt update
+$ sudo apt upgrade                         </code></pre><br />
+
+                            <p>
+                                After this, we should install python package manager, pip, as well as some dependencies we'll need later on:
+                            </p>
+                            <pre><code class="language-bash">$ sudo apt install python3-pip network-tools openssh-server network-manager</code></pre><br />
+
+                            <p>
+                                Next, let's install Jupyter. You can do either Jupyterlab or Jupyter-Notebook. In this example, we'll do the latter, by running the command:
+                            </p>
+                            <pre><code class="language-bash">$ pip3 install notebook </code></pre><br />
+
+                            <p>
+                                Jupyter has now been added to our PATH variable, but we may need to restart the shell session. Since we also need to do some network configuration, let's shutdown the VM:
+                            </p>
+                            <pre><code class="language-bash">$ sudo shutdown now </code></pre><br />
+
+                            <p>
+                                Apply the following network configuration, and then start the virtual machine.
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/Port1.png" class="img-fluid" alt="Ubuntu VM"> <br /><br />
+
+                            <p>
+                                We are almost done. Now, start the virtual machine, and run Jupyter in such a way it does not try to open a browser.
+                            </p>
+                            <pre><code class="language-bash">$ jupyter notebook --no-browser</code></pre><br />
+
+                            <p>
+                                Next, create an SSH tunnel that port-forwards the traffic of the VM to the host computer. On Windows, this can be done with the PuTTY client, as shown <a href="https://tecadmin.net/putty-ssh-tunnel-and-port-forwarding/" target="_blank">here</a>. On Linux or MacOS, simply run the following code
+                            </p>
+                            <pre><code class="language-bash">$ ssh daniel@localhost -p 2222 -NL 8888:localhost:8888 </code></pre><br />
+
+                            <p>
+                                And we're done :D. Simply open Jupyter Notebook from the browser of your host machine in your prefered operative system, and run whatever code you may want to, such as the thematic "Hello world!". Note that the last few steps can be applied to remote connections as well.
+                            </p>
+                            <img src="/assets/latest-news/jupyter-vm/Final.png" class="img-fluid" alt="Ubuntu VM"> <br /><br />
+
+                            <p>
+                                As final remarks, remember that you can adjust the RAM and CPU cores the virtual machine uses according to your computational needs on the go, you just need to turn off the VM, adjust as needed and turn back on.
+                            </p>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar-section">
+                        <div class="recent-posts">
+                            <h4>Recent Posts</h4>
+                            <ul>
+                                <li><a href="../interactive-network/interactive-network.html">Coding an Interactive Social Network.</a></li>
+                                <li><a href="../game-of-life/game-of-life.html">Interactive Conway Game of Life.</a></li>
+                                <li><a href="../time-line/time-line.html">Interactive Timelines with Timeline.js.</a></li>
+                                <li><a href="../interactive-particles/interactive-particles.html">Coding an Interactive Particle Simulation.</a></li>
+                                <li><a href="../extracting-characters/extracting-characters.html">Extracting Character Connections from a Book.</a></li>
+                            </ul>
+                        </div>
+                        <div class="tag-section">
+                            <h4>Tags</h4>
+                            <ul>
+                                <li><a href="#">Jupyter</a></li>
+                                <li><a href="#">SSH</a></li>
+                                <li><a href="#">Linux</a></li>
+                                <li><a href="#">Remote connection</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end single article section -->
+    <!-- footer -->
+    <div id="footer-placeholder"></div>
+    <!-- jquery -->
+    <script src="../../js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="../../js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="../../js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="../../js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="../../js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="../../js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="../../js/sticker.js"></script>
+    <!-- main js -->
+    <script src="../../js/main.js"></script>
+    <!-- load sections js -->
+    <script src="../../js/load_sections_latest_news.js"></script>
+    <script src="../../js/prism.js"></script>
+</body>
+
+</html>
